@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_205602) do
     t.string "email"
     t.string "bootcamp_name"
     t.string "city"
+    t.string "state"
     t.string "password_digest"
     t.string "keywords"
     t.string "uid"

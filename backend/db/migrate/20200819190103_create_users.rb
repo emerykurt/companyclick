@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :email
       t.string :bootcamp_name
       t.string :city
+      t.string :state
       t.string :password_digest
       t.string :keywords
       t.string :uid
