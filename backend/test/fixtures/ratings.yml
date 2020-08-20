@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  interview: false
+  interview_process: MyString
+  hired: false
+  comapny_lifestyle: MyString
+  compensation: 1
+  management_mentorship: MyString
+  diversity: MyString
+  user_id: 1
+  company_id: 1
+
+two:
+  interview: false
+  interview_process: MyString
+  hired: false
+  comapny_lifestyle: MyString
+  compensation: 1
+  management_mentorship: MyString
+  diversity: MyString
+  user_id: 1
+  company_id: 1
