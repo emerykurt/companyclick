@@ -17,6 +17,8 @@ ActiveRecord::Schema.define(version: 2020_08_19_205602) do
     t.string "hq_city"
     t.string "hq_state"
     t.string "mission_statement"
+    t.string "website"
+    t.string "twitter"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
