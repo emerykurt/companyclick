@@ -6,7 +6,7 @@ const loginSubmitButton = document.getElementById("login-submit")
 const signUpSubmitButton = document.getElementById("sign-up-submit")
 
 loginButton.addEventListener('click', login)
-function login(){
+function login(e){
     const loginForm = `<form id="user-login">
         <label for="username">Username:</label>
         <input type="text" name="Username" id="username"><br/>
@@ -21,7 +21,7 @@ function login(){
 }
 
 signUpButton.addEventListener('click', signup)
-function signup(){
+function signup(e){
     const signUpForm = `<form id="user-login">
         <label for="username">Username:</label>
         <input type="text" name="Username" id="username"><br/>
@@ -58,12 +58,14 @@ function signup(){
     signUpSubmitForm.addEventListener('submit', signUpSubmit)
 }
 
-function loginSubmit(){
+function loginSubmit(e){
 // login into profile
+    e.preventDefault()
 }
 
-function signUpSubmit(){
+function signUpSubmit(e){
 // create profile
+    e.preventDefault()
 }
 
 
