@@ -5,7 +5,6 @@ const enterArea = document.querySelector('#enter-area')
 const loginSubmitButton = document.getElementById("login-submit")
 const signUpSubmitButton = document.getElementById("sign-up-submit")
 
-enterArea.addEventListener('click', enterAreaClick)
 function enterAreaClick (e){
     switch (e.target.id) {
         case "login-user":
@@ -49,7 +48,7 @@ function enterAreaClick (e){
                 <option value="other">other</option>
             </select><br/>
             <label for="password">Password:</label>
-            <input type="text" name="password" id="password"><br/>
+            <input type="password" name="password" id="password"><br/>
             <input type="submit" value="Join CompanyClick!" id="sign-up-submit">
             </form>`
             enterArea.innerHTML = signUpForm
@@ -62,17 +61,46 @@ function enterAreaClick (e){
     }
 }
 
-function loginSubmit(e){
 // login into profile
+function loginSubmit(e){
     console.log("Submit Login")
     e.preventDefault()
+    
 }
 
-function signUpVerify(s){
 // verify profile
-    debugger
-    console.log("Verfy Info")
-    e.preventDefault()
+function signUpVerify(s){
+    s.preventDefault()
+    let username = s.target.children[1].value
+    let first_name = s.target.children[4].value
+    let last_name = s.target.children[7].value
+    let city = s.target.children[10].value
+    let state = s.target.children[13].value
+    let bootcamp = s.target.children[16].value
+    let password = s.target.children[19].value
+
+    enterArea.innerHTML = 
+       `<h4>Verify Information is correct?</h4>
+        <ul id="verify-info">
+            <label for="username">Username:</label> ${username} <br/>
+            <label for="username">Username:</label> ${first_name} <br/>
+            <label for="last_name">Last Name:</label> ${last_name} <br/>
+            <label for="city">City:</label> ${city} <br/>
+            <label for="state">State:</label> ${state} <br/>
+            <label for="bootcamp">Bootcamp:</label> ${bootcamp}<br/>
+            <hidden for="password" value=${password}/>
+            <button id="edit-info">Edit</button>
+            <input type="submit" value="Signup" id="submit-signUp">
+        </ul>`
+        const verifiedInfo = document.getElementById("submit-signUp")
+        verifiedInfo.addEventListener('click', infoVerified)
 }
 
+function infoVerified(){
+    console.log("Info has been verified")
+    // persist data to backend. Save in User database
+}
 
+document.addEventListener('DOMContentLoaded', (e) => {
+    enterArea.addEventListener('click', enterAreaClick)
+})
