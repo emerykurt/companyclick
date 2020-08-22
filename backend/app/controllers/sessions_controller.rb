@@ -28,4 +28,12 @@ class SessionsController < ApplicationController
     session[:user_id] = nil
     redirect_to welcome_path
   end
+
+  def page_requires_login
+  end
+
+  private
+  def auth
+      request.env['omniauth.auth']
+  end
 end

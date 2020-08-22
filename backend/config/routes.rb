@@ -1,23 +1,10 @@
 Rails.application.routes.draw do
-  get 'sessions/login'
-  get 'sessions/omniauth'
-  get 'sessions/create'
-  get 'sessions/destroy'
-  get 'ratings/new'
-  get 'ratings/create'
-  get 'ratings/index'
-  get 'ratings/edit'
-  get 'ratings/update'
-  get 'ratings/show'
-  get 'ratings/destroy'
-  get 'ratings/top_review'
-  get 'companies/index'
-  get 'companies/show'
-  get 'users/create'
-  get 'users/edit'
-  get 'users/new'
-  get 'users/update'
-  get 'users/destroy'
-  get 'users/show'
+  get 'auth/:provider/callback', to: 'sessions#omniauth'
+  resources :sessions, only: [:login, :create]
+  resources :ratings 
+  get 'authorized', to: 'sessions#page_requires_login', as: 'require_login'
+  get 'ratings/top_review', to: 'ratings#top_reviews', as: 'top_reviews'
+  resources :companies, only: [:index, :show]
+  resources :users, except: [:index]
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
