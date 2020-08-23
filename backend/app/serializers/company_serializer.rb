@@ -1,4 +1,4 @@
-class ComapnySerializer
+class CompanySerializer
   include FastJsonapi::ObjectSerializer
   attributes 
 end
