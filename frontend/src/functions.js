@@ -15,26 +15,41 @@ function fetchCompanies(){
     fetch('http://localhost:3000/companies')
     .then(res => res.json())
     .then(addCompaniesToDom)
+    // .then(renderMoreInfo)
+    // .then(renderLessInfo)
 } //working
 
 function addCompaniesToDom(response){
     enterArea.innerHTML = " "
-    let buttons = []
     response.data.forEach( company => {
-        enterBody.innerHTML += `<li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}</li><br/>
+        enterBody.innerHTML += `
+        <li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
+        <div id="element-moreInfoCheckBox-${company.id}" class="moreInfoCheckBox-${company.id}" style="display:none">Mission Statement: ${company.attributes.mission_statement}<br/>
+        <button id="${company.attributes.website}">Apply Here</button>
+        <button id="${company.attributes.twitter}">Twitter</button><br/><br/>
+        </div>
+        </li>
+        <label for="more-info" id="moreInfoLabel-moreInfoCheckBox-${company.id}">more...</label>
+        <input type="checkbox" name="moreInfo" id="moreInfoCheckBox-${company.id}"><br/>
         <button class="review-comp" id="company-info-${company.id}">Write a Review</button>`
-    })    
+    }) 
+    return response.data   
 }  // working
 
 const handleClickEvent = (e) => {
+    // debugger
     if (e.target.id.includes('company-info')){
         writeReview()
+    } else if(e.target.id.includes('moreInfoCheckBox-')){
+        toggleMoreInfo(e.target) 
+    } else if(e.target.id.includes('https://')){
+        applyLink(e.target) 
+    } else if(e.target.id.includes('https://www.twitter')){
+        twitterLink(e.target) 
     } else if (e.target === quizButton){
-        renderQuiz()
+        renderQuiz() //WIP
     } else if (e.target === companiesList){
         fetchCompanies()
-    } else if (e.target === moreInfoBtn){
-        renderMoreInfo() //WIP
     } else if (e.target.id === "hiredCheckBox" && e.target.checked === true){
         renderHiredExtension()
     } else if (e.target.id === "hiredCheckBox" && e.target.checked === false){
@@ -46,8 +61,35 @@ const handleClickEvent = (e) => {
     }
 }//working
 
+const toggleMoreInfo = (info) => {
+    // debugger
+    if (info.checked === true){
+        // debugger
+        const moreInfoArea = document.getElementById(`element-${info.id}`)
+        moreInfoArea.style.display = 'block'
+        const moreInfoLabel = document.getElementById(`moreInfoLabel-${info.id}`)
+        moreInfoLabel.innerHTML = "less..."
+    }
+    else if (info.checked === false){
+        // debugger
+        const moreInfoArea = document.getElementById(`element-${info.id}`)
+        moreInfoArea.style.display = 'none'
+        const moreInfoLabel = document.getElementById(`moreInfoLabel-${info.id}`)
+        moreInfoLabel.innerHTML = "more..."
+    }
+}
+
+const applyLink = (info) => {
+    console.log("APPLY")
+    window.open(info.id, "_blank");
+}
+
+const twitterLink = (info) => {
+    console.log("TWITTER")
+    window.open(info.id, "_blank");
+}
+
 const writeReview = () => {
-    console.log("form is showing")
     const reviewForm = `<form id="company-review">
     <label for="interview">Did you interview?</label>
     <input type="checkbox" name="Interview" id="interviewCheckBox"><br/>
@@ -80,7 +122,6 @@ const writeReview = () => {
     <input type="submit" value="Submit Review" id="sign-up-submit">
     </form>` 
     enterArea.innerHTML = reviewForm
-    // debugger
 } // working
 
 function renderInterviewExtension(){
