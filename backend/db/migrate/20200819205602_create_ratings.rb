@@ -4,11 +4,15 @@ class CreateRatings < ActiveRecord::Migration[6.0]
       t.boolean :interview
       t.string :interview_process
       t.boolean :hired
-      t.string :comapny_lifestyle
+      t.string :company_lifestyle
       t.integer :compensation
       t.string :management_mentorship
       t.string :diversity
-      t.integer :user_id
+      t.string :first_name
+      t.string :last_name
+      t.string :bootcamp
+      t.string :city 
+      t.string :state
       t.integer :company_id
 
       t.timestamps

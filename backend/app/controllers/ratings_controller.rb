@@ -6,6 +6,8 @@ class RatingsController < ApplicationController
   end
 
   def index
+    ratings = Rating.all
+    render json: RatingSerializer.new(ratings)
   end
 
   def edit

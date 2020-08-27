@@ -27,28 +27,16 @@ ActiveRecord::Schema.define(version: 2020_08_19_205602) do
     t.boolean "interview"
     t.string "interview_process"
     t.boolean "hired"
-    t.string "comapny_lifestyle"
+    t.string "company_lifestyle"
     t.integer "compensation"
     t.string "management_mentorship"
     t.string "diversity"
-    t.integer "user_id"
-    t.integer "company_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "username"
-    t.string "email"
-    t.string "bootcamp_name"
+    t.string "bootcamp"
     t.string "city"
     t.string "state"
-    t.string "password_digest"
-    t.string "keywords"
-    t.string "uid"
-    t.string "provider"
+    t.integer "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

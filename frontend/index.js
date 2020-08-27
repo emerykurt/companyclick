@@ -1,106 +1,78 @@
-let topCompaniesList = document.getElementById("topCompaniesList")
-const loginButton = document.getElementById("login-user")
-const signUpButton = document.getElementById("signUp-user")
-const enterArea = document.querySelector('#enter-area')
-const loginSubmitButton = document.getElementById("login-submit")
-const signUpSubmitButton = document.getElementById("sign-up-submit")
+document.addEventListener('DOMContentLoaded', (init)) 
+function init(){ 
+const topCompaniesList = document.getElementById("topCompaniesList");
+const companiesList = document.getElementById("companiesList");
+const quizButton = document.getElementById("quizButton");
+const enterArea = document.querySelector('#enter-area');
+const enterBody = document.getElementById("enter-area");
+const loginSubmitButton = document.getElementById("login-submit");
+const signUpSubmitButton = document.getElementById("sign-up-submit");
+const navBar = document.getElementById("nav");
+const quizContainer = document.getElementById('quiz');
+const resultsContainer = document.getElementById('results');
+const submitButton = document.getElementById('submit');
 
+
+//show all of the companies
+function fetchTop(){
+    fetch('http://localhost:3000/companies/top_companies')
+    .then(res => res.json())
+    .then(addTopToDom)
+}
+fetchTop()
+function addTopToDom(response){
+    response.data.forEach( company => {
+        topCompaniesList.innerHTML += `<li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}</li>`
+    })
+}
+
+
+//navigator
 function enterAreaClick (e){
     switch (e.target.id) {
-        case "login-user":
-            const loginForm = `<form id="user-login">
-            <label for="username">Username:</label>
-            <input type="text" name="Username" id="username"><br/>
-            <label for="password">Password:</label>
-            <input type="text" name="Password" id="password">
-            <input type="submit" value="Login" id="login-submit">
-            </form>`
-            enterArea.innerHTML = loginForm
-            const loginSubmitForm = document.getElementById("user-login")
-            loginSubmitForm.addEventListener('submit', loginSubmit) 
-            break;
-        case "signUp-user":
-            const signUpForm = `<form id="user-signup">
-            <label for="username">Username:</label>
-            <input type="text" name="Username" id="username"><br/>
-            <label for="first_name">First Name:</label>
-            <input type="text" name="first_name" id="first_name"><br/>
-            <label for="last_name">Last Name:</label>
-            <input type="text" name="last_name" id="last_name"><br/>
-            <label for="city">City:</label>
-            <input type="text" name="city" id="city"><br/>
-            <label for="state">State:</label>
-            <input type="text" name="state" id="state"><br/>
-            <label for="bootcamp">What bootcamp did you go to?</label>
-            <select name="bootcamp" id="bootcamp" form="signUpForm">
-                <option value="FlatIron">FlatIron</option>
-                <option value="General Assembly">General Assembly</option>
-                <option value="Kenzie Academy">Kenzie Academy</option>
-                <option value="Thinkful">Thinkful</option>
-                <option value="Springboard">Springboard</option>
-                <option value="App Academy">App Academy</option>
-                <option value="Ironhack">Ironhack</option>
-                <option value="Le Wagon">Le Wagon</option>
-                <option value="CareerFoundary">CareerFoundary</option>
-                <option value="Nucamp">Nucamp</option>
-                <option value="Code Institute">Code Institute</option>
-                <option value="Lambda School">Lambda School</option>
-                <option value="other">other</option>
-            </select><br/>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password"><br/>
-            <input type="submit" value="Join CompanyClick!" id="sign-up-submit">
-            </form>`
-            enterArea.innerHTML = signUpForm
-            const signUpSubmitForm = document.getElementById("user-signup")
-            signUpSubmitForm.addEventListener('submit', signUpVerify)
-            break;
+        case "quizButton":
+            enterArea.innerHTML = " "
+            enterArea.innerHTML =
+                `<div id="quiz"></div>
+                <button id="submit">Get Results</button>
+                <div id="results"></div>`
+            const quizContainer = document.getElementById('quiz');
+            const resultsContainer = document.getElementById('results');
+            const submitButton = document.getElementById('submit');
+            quizContainer.innerHTML = buildQuiz
+            function buildQuiz(){
+                const myQuestions = []
+            }
+            submitButton.addEventListener('click', submitResults);
+            function submitResults(){
 
+            }
+
+            break;
+        case "companiesList":
+            function fetchCompanies(){
+                fetch('http://localhost:3000/companies')
+                .then(res => res.json())
+                .then(addCompaniesToDom)
+            }
+            fetchCompanies()
+
+            function addCompaniesToDom(response){
+                enterArea.innerHTML = " "
+                response.data.forEach( company => {
+                    enterBody.innerHTML += `<li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}</li><br/>
+                    <button class="review-comp" id="company-info-${company.id}">Write a Review</button>`
+                    let review = document.getElementById(`company-info-${company.id}`)
+                    review.addEventListener('submit', writeReview)
+                })
+            }
+            break;
         default:
             break;
     }
 }
 
-// login into profile
-function loginSubmit(e){
-    console.log("Submit Login")
-    e.preventDefault()
-    
+// document.addEventListener('DOMContentLoaded', (e) => { 
+    companiesList.addEventListener('click', enterAreaClick)
 }
 
-// verify profile
-function signUpVerify(s){
-    s.preventDefault()
-    let username = s.target.children[1].value
-    let first_name = s.target.children[4].value
-    let last_name = s.target.children[7].value
-    let city = s.target.children[10].value
-    let state = s.target.children[13].value
-    let bootcamp = s.target.children[16].value
-    let password = s.target.children[19].value
-
-    enterArea.innerHTML = 
-       `<h4>Verify Information is correct?</h4>
-        <ul id="verify-info">
-            <label for="username">Username:</label> ${username} <br/>
-            <label for="username">Username:</label> ${first_name} <br/>
-            <label for="last_name">Last Name:</label> ${last_name} <br/>
-            <label for="city">City:</label> ${city} <br/>
-            <label for="state">State:</label> ${state} <br/>
-            <label for="bootcamp">Bootcamp:</label> ${bootcamp}<br/>
-            <hidden for="password" value=${password}/>
-            <button id="edit-info">Edit</button>
-            <input type="submit" value="Signup" id="submit-signUp">
-        </ul>`
-        const verifiedInfo = document.getElementById("submit-signUp")
-        verifiedInfo.addEventListener('click', infoVerified)
-}
-
-function infoVerified(){
-    console.log("Info has been verified")
-    // persist data to backend. Save in User database
-}
-
-document.addEventListener('DOMContentLoaded', (e) => {
-    enterArea.addEventListener('click', enterAreaClick)
-})
