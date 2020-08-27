@@ -8,4 +8,6 @@ const navBar = document.getElementById("nav");
 const quizContainer = document.getElementById('quiz');
 const resultsContainer = document.getElementById('results');
 const moreInfoBtn = document.getElementById('more-info')
+const interviewExten = document.querySelector("input[name=Interview]")
+const hired = document.getElementById("hiredCheckBox")
 let review
