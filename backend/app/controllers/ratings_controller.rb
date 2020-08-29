@@ -18,12 +18,16 @@ class RatingsController < ApplicationController
   end
 
   def update
+    rating = Rating.find(params[:id])
   end
 
   def show
   end
 
   def destroy
+    rating = Rating.find(params[:id])
+    rating.destroy
+    render json: {message: "Successfully deleted the rating of #{rating.first_name} about #{rating.company.name}!"}
   end
 
   def top_review

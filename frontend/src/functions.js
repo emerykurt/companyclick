@@ -9,7 +9,11 @@ const handleClickEvent = (e) => {
     } else if(e.target.className === "companyApply"){
         applyLink(e.target) 
     } else if(e.target.className === "companyTwitter"){
-        twitterLink(e.target) 
+        twitterLink(e.target)
+    } else if(e.target.className === "delete"){
+        deleteReview(e.target)
+    } else if(e.target.className === "update"){
+        updateReview(e.target) 
     } else if (e.target === companiesList){
         fetchCompanies()
     } else if (e.target.id === "hiredCheckBox"){
@@ -278,7 +282,7 @@ function submitResults(e){
 }
 
 function addReviewToDom(response){
-    debugger
+    // debugger
     const infoSubmitted = `<div id="review-box">
         Interview Process: ${response.attributes.interview_process}<br/>
         Company Lifestyle: ${response.attributes.company_lifestyle}<br/>
@@ -301,7 +305,7 @@ function fetchAllReviews(){
 }
 
 function addReviewsToDom(response){
-    debugger
+    // debugger
     enterArea.innerHTML = " "
     response.forEach( review => {
         enterArea.innerHTML += 
@@ -322,3 +326,29 @@ function addReviewsToDom(response){
         `})
 }
 
+function deleteReview(e){
+    // id="review-${review.id}
+    // debugger
+    let configObj = {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        }
+    }
+
+    fetch(`http://localhost:3000/ratings/${e.dataset.id}`, configObj)
+    .then(res => res.json())
+    // .then(init())
+    .then(json => {
+        alert(json.message)
+    })
+    let reviewDelete = document.getElementById(`review-${e.dataset.id}`)
+    reviewDelete.remove()
+    
+}
+
+function updateReview(e){
+    //id="review-${review.id}
+    let reviewUpdate = document.getElementById(`review-${e.dataset.id}`)
+}
