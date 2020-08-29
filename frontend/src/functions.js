@@ -1,10 +1,30 @@
-// All functions/Variables that need local scope
+const handleClickEvent = (e) => {
+    // debugger
+    if (e.target.className === "review-comp"){
+        writeReview(e.target)
+    } else if (e.target.id === "sign-up-submit"){
+        submitResults(e)
+    } else if(e.target.className === "moreInfo"){
+        toggleMoreInfo(e.target) 
+    } else if(e.target.className === "companyApply"){
+        applyLink(e.target) 
+    } else if(e.target.className === "companyTwitter"){
+        twitterLink(e.target) 
+    } else if (e.target === companiesList){
+        fetchCompanies()
+    } else if (e.target.id === "hiredCheckBox"){
+        toggleHired(e.target)
+    } else if (e.target.id === "interviewCheckBox"){
+        toggleInterview(e.target)
+    }
+}//working
 
 function fetchTop(){
     fetch('http://localhost:3000/companies/top_companies')
     .then(res => res.json())
     .then(addTopToDom)
 } //working
+
 function addTopToDom(response){
     response.data.forEach( company => {
         topCompaniesList.innerHTML += `<li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}</li>`
@@ -15,104 +35,57 @@ function fetchCompanies(){
     fetch('http://localhost:3000/companies')
     .then(res => res.json())
     .then(addCompaniesToDom)
-    // .then(renderMoreInfo)
-    // .then(renderLessInfo)
 } //working
 
 function addCompaniesToDom(response){
     enterArea.innerHTML = " "
     response.data.forEach( company => {
-        enterBody.innerHTML += `
-        <li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
-        <div id="element-moreInfoCheckBox-${company.id}" class="moreInfoCheckBox-${company.id}" style="display:none">Mission Statement: ${company.attributes.mission_statement}<br/>
-        <button id="${company.attributes.website}">Apply Here</button>
-        <button id="${company.attributes.twitter}">Twitter</button><br/><br/>
-        </div>
-        </li>
-        <label for="more-info" id="moreInfoLabel-moreInfoCheckBox-${company.id}">more...</label>
-        <input type="checkbox" name="moreInfo" id="moreInfoCheckBox-${company.id}"><br/>
-        <button class="review-comp" id="company-info-${company.id}">Write a Review</button>`
+        enterArea.innerHTML += 
+        `<li id="${company.id}">
+            ${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
+            <label for="more-info" id="moreInfoText-${company.id}" class="moreInfoText" data-id="${company.id}">more...</label>
+            <input type="checkbox" class="moreInfo" data-id="${company.id}"><br/>
+                <div id="element-${company.id}" style="display:none">
+                    Mission Statement: ${company.attributes.mission_statement}<br/>
+                    <button class="companyApply" data-id="${company.attributes.website}">Apply Here</button>
+                    <button class="companyTwitter" data-id="${company.attributes.twitter}">Twitter</button><br/><br/>
+                </div>
+            <button class="review-comp" data-id="${company.id}">Write a Review</button><br/><br/>
+        </li>`
     }) 
-    return response.data   
+    // return response.data   
 }  // working
 
-const handleClickEvent = (e) => {
-    // debugger
-    if (e.target.id.includes('company-info')){
-        writeReview()
-    } else if (e.target.id === "sign-up-submit"){
-        submitResults(e)
-    } else if(e.target.id.includes('moreInfoCheckBox-')){
-        toggleMoreInfo(e.target) 
-    } else if(e.target.id.includes('https://')){
-        applyLink(e.target) 
-    } else if(e.target.id.includes('https://www.twitter')){
-        twitterLink(e.target) 
-    } else if (e.target === quizButton){
-        renderQuiz() //WIP
-    } else if (e.target === companiesList){
-        fetchCompanies()
-    } else if (e.target.id === "hiredCheckBox" && e.target.checked === true){
-        renderHiredExtension()
-    } else if (e.target.id === "hiredCheckBox" && e.target.checked === false){
-        clearHiredExtension()
-    } else if (e.target.id === "interviewCheckBox" && e.target.checked === true){
-    renderInterviewExtension()
-    } else if (e.target.id === "interviewCheckBox" && e.target.checked === false){
-    clearInterviewExtension()
-    }
-}//working
-
-const toggleHired = (e) => {
-    if (e.checked === true){
-        const interviewExtenArea = document.getElementById("interviewExt")
-        const interviewExtForm = `
-        <label for="interview">Interview Process:</label>
-        <select name="interviewProcess" id="interviewProcess" form="company-review">
-            <option value=" "> </option>
-            <option value="easy">easy</option>
-            <option value="moderate">moderate</option>
-            <option value="extensive">extensive</option>
-        </select><br/>
-        <label for="hired">Were you hired?</label>
-        <input type="checkbox" name="hired" id="hiredCheckBox"><br/>
-        <div id="hiredExt" form="hired-portion">
-        </div>`
-        interviewExtenArea.innerHTML = interviewExtForm
-    } else if (e.checked === false){
-        const interviewExtenArea = document.getElementById("interviewExt")
-        interviewExtenArea.innerHTML = " " 
-    }
-}
 const toggleMoreInfo = (e) => {
     // debugger
     if (e.checked === true){
         // debugger
-        const moreInfoArea = document.getElementById(`element-${e.id}`)
+        const moreInfoArea = document.getElementById(`element-${e.dataset.id}`)
         moreInfoArea.style.display = 'block'
-        const moreInfoLabel = document.getElementById(`moreInfoLabel-${e.id}`)
-        moreInfoLabel.innerHTML = "less..."
+        const moreInfoLabel = document.getElementById(`moreInfoText-${e.dataset.id}`)
+        moreInfoLabel.innerHTML = "...less"
     }
     else if (e.checked === false){
         // debugger
-        const moreInfoArea = document.getElementById(`element-${e.id}`)
+        const moreInfoArea = document.getElementById(`element-${e.dataset.id}`)
         moreInfoArea.style.display = 'none'
-        const moreInfoLabel = document.getElementById(`moreInfoLabel-${e.id}`)
+        const moreInfoLabel = document.getElementById(`moreInfoText-${e.dataset.id}`)
         moreInfoLabel.innerHTML = "more..."
     }
 }
 
-const applyLink = (info) => {
+const applyLink = (e) => {
     console.log("APPLY")
-    window.open(info.id, "_blank");
+    window.open(e.dataset.id, "_blank");
 }
 
-const twitterLink = (info) => {
+const twitterLink = (e) => {
     console.log("TWITTER")
-    window.open(info.id, "_blank");
+    window.open(e.dataset.id, "_blank");
 }
 
-const writeReview = () => {
+const writeReview = (e) => {
+    // debugger
     const reviewForm = `<form id="company-review">
     <label for="company-id">Company:</label>
     <select name="companyId" id="companyId" form="company-review">
@@ -153,8 +126,8 @@ const writeReview = () => {
     <input type="checkbox" name="Interview" id="interviewCheckBox"><br/>
         <div id="interviewExt" form="interview-portion">
         </div>
-    <label for="firstname">First Name:</label>
-    <input type="text" name="firstName" id="firstName><br/>
+    <label for="first_name">First Name:</label>
+    <input type="text" name="firstName" id="firstName">
     <label for="last_name">Last Name:</label>
     <input type="text" name="last_name" id="lastName"><br/>
     <label for="city">City:</label>
@@ -179,12 +152,15 @@ const writeReview = () => {
         <option value="other">other</option>
     </select><br/>
     <input type="submit" value="Submit Review" id="sign-up-submit">
-    </form>` 
+    </form>
+    <div class="infoSubmit" id:"review-results"></div>` 
     enterArea.innerHTML = reviewForm
+    document.getElementById("companyId").selectedIndex = e.dataset.id
 } 
 
-function renderInterviewExtension(){
+function toggleInterview(e){
     // debugger
+    if (e.checked === true) {
     const interviewExtenArea = document.getElementById("interviewExt")
     const interviewExtForm = `
     <label for="interview">Interview Process:</label>
@@ -199,65 +175,64 @@ function renderInterviewExtension(){
         <div id="hiredExt" form="hired-portion">
         </div>`
     interviewExtenArea.innerHTML = interviewExtForm
+    }else if (e.checked === false){
+        const interviewExtenArea = document.getElementById("interviewExt")
+        interviewExtenArea.innerHTML = " " 
+    }
 }
 
-function clearInterviewExtension(){
-    const interviewExtenArea = document.getElementById("interviewExt")
-    interviewExtenArea.innerHTML = " " 
-}
-
-function renderHiredExtension(){
-    const hiredExtenArea = document.getElementById("hiredExt")
-    const hiredExtForm = `
-    <label for="company-lifestyle">Company Lifestyle:</label>
-    <select name="companyLifestyle" id="companyLifestyle" form="signUpForm">
-        <option value=" "> </option>
-        <option value="innovative">innovative</option>
-        <option value="challenging">challenging</option>
-        <option value="progressive">progressive</option>
-        <option value="micromanaged">micromanaged</option>
-        <option value="flexible">flexible</option>
-        <option value="problematic">problematic</option>
-    </select><br/>
-    <label for="compensation">Compensation (this information will not be displayed or connected with your name):</label>
-    <input type="number" min="50000.00" step="5.00" name="compensation" id="compensation"><br/>
-    <label for="management-mentorship">Management/Mentorship:</label>
-    <select name="managementMentorship" id="managementMentorship" form="signUpForm">
+const toggleHired = (e) => {
+    if (e.checked === true){
+        const hiredExtenArea = document.getElementById("hiredExt")
+        const hiredExtForm = `
+        <label for="company-lifestyle">Company Lifestyle:</label>
+        <select name="companyLifestyle" id="companyLifestyle" form="signUpForm">
+            <option value=" "> </option>
+            <option value="innovative">innovative</option>
+            <option value="challenging">challenging</option>
+            <option value="progressive">progressive</option>
+            <option value="micromanaged">micromanaged</option>
+            <option value="flexible">flexible</option>
+            <option value="problematic">problematic</option>
+        </select><br/>
+        <label for="compensation">Compensation (this information will not be displayed or connected with your name):</label>
+        <input type="number" min="50000.00" step="5.00" name="compensation" id="compensation"><br/>
+        <label for="management-mentorship">Management/Mentorship:</label>
+        <select name="managementMentorship" id="managementMentorship" form="signUpForm">
+            <option value=" "> </option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select><br/>
+        <label for="diversity">Diversity:</label>
+        <select name="diversity" id="diversity" form="signUpForm">
         <option value=" "> </option>
         <option value="yes">yes</option>
         <option value="no">no</option>
-    </select><br/>
-    <label for="diversity">Diversity:</label>
-    <select name="diversity" id="diversity" form="signUpForm">
-    <option value=" "> </option>
-    <option value="yes">yes</option>
-    <option value="no">no</option>
-    </select><br/>`
-    hiredExtenArea.innerHTML = hiredExtForm
+        </select><br/>`
+        hiredExtenArea.innerHTML = hiredExtForm
+    } else if (e.checked === false){
+        const hiredExtenArea = document.getElementById("hiredExt")
+        hiredExtenArea.innerHTML = " "
+    }
 }
 
-function clearHiredExtension(){
-    const hiredExtenArea = document.getElementById("hiredExt")
-    hiredExtenArea.innerHTML = " "
-}
+// function renderQuiz(){
+//     console.log("The quiz is on FYAH")
+//     enterArea.innerHTML = " "
+//             enterArea.innerHTML =
+//                 `<div id="quiz"></div>
+//                 <button id="submit">Get Results</button>
+//                 <div id="results"></div>`
+// }
+// function buildQuiz(){
+//     const myQuestions = []
+// }
 
-function renderQuiz(){
-    console.log("The quiz is on FYAH")
-    enterArea.innerHTML = " "
-            enterArea.innerHTML =
-                `<div id="quiz"></div>
-                <button id="submit">Get Results</button>
-                <div id="results"></div>`
-}
-function buildQuiz(){
-    const myQuestions = []
-}
 function submitResults(e){
-    debugger
+    // debugger
+    e.preventDefault()
     console.log("we are here")
-    const interview = document.getElementById("interview")
     const interviewProcess = document.getElementById("interviewProcess")
-    const hired = document.getElementById("hiredCheckBox")
     const companyLifestyle = document.getElementById("companyLifestyle")
     const compensation = document.getElementById("compensation")
     const managementMentorship = document.getElementById("managementMentorship")
@@ -268,4 +243,82 @@ function submitResults(e){
     const city = document.getElementById("city")
     const state = document.getElementById("state")
     const companyId = document.getElementById("companyId")
+
+    let newInfoObj = {
+        interview_process: interviewProcess.value,
+        company_lifestyle: companyLifestyle.value,
+        compensation: compensation.value,
+        management_mentorship: managementMentorship.value,
+        diversity: diversity.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
+        bootcamp: bootcamp.value,
+        city: city.value,
+        state: state.value,
+        company_id: companyId.value 
+    }
+
+    let configObj = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify(newInfoObj)
+    }
+
+    fetch('http://localhost:3000/ratings', configObj)
+    .then(res => res.json())
+    // .then(init())
+    .then(response => {
+        addReviewToDom(response.data)
+    })
+    // .then(response => {
+    //     addReviewToDom(response.data)})
 }
+
+function addReviewToDom(response){
+    debugger
+    const infoSubmitted = `<div id="review-box">
+        Interview Process: ${response.attributes.interview_process}<br/>
+        Company Lifestyle: ${response.attributes.company_lifestyle}<br/>
+        Mentorship: ${response.attributes.management_mentorship}<br/>
+        Diversity: ${response.attributes.diversity}<br/>
+        <div id="review-identity"><br/>
+        -${response.attributes.first_name} ${response.attributes.last_name} (${response.attributes.bootcamp})<br/>
+        from: ${response.attributes.city}, ${response.attributes.state}
+        </div></div><br/><br/>
+        Thank you for your submission!`
+    enterArea.innerHTML = infoSubmitted 
+}
+
+function fetchAllReviews(){
+    fetch('http://localhost:3000/ratings')
+    .then(res => res.json())
+    .then(response => {
+        addReviewsToDom(response.data)
+    })
+}
+
+function addReviewsToDom(response){
+    debugger
+    enterArea.innerHTML = " "
+    response.forEach( review => {
+        enterArea.innerHTML += 
+        `<div id="review-${review.id}">
+            <li>
+            Interview Process: ${review.attributes.interview_process}<br/>
+            Company Lifestyle: ${review.attributes.company_lifestyle}<br/>
+            Mentorship: ${review.attributes.management_mentorship}<br/>
+            Diversity: ${review.attributes.diversity}<br/>
+                <div id="review-identity"><br/>
+                -${review.attributes.first_name} ${review.attributes.last_name} (${review.attributes.bootcamp})<br/>
+                from: ${review.attributes.city}, ${review.attributes.state}
+                </div>
+            </li>
+            <button class="delete" data-id="${review.id}">delete</button>
+            <button class="update" data-id="${review.id}">update</button>
+        </div><br/><br/>
+        `})
+}
+

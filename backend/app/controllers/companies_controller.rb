@@ -1,7 +1,10 @@
 class CompaniesController < ApplicationController
   def index
     companies = Company.all
-    render json: CompanySerializer.new(companies)
+    options = {
+      includes: [:ratings]
+    }
+    render json: CompanySerializer.new(companies, options)
   end
 
   def top_companies
@@ -12,7 +15,10 @@ class CompaniesController < ApplicationController
 
   def show
     company = Company.find(params[:id])
-    render json: CompanySerializer.new(company)
+    options = {
+      includes: [:ratings]
+    }
+    render json: CompanySerializer.new(company, options)
   end
 
   

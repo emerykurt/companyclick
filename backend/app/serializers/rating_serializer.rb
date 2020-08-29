@@ -1,6 +1,5 @@
 class RatingSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :interview, :interview_process, :hired, :company_lifestyle, :compensation, :management_mentorship, :diversity
-  belongs_to :user
-  belongs_to :companies 
+  attributes :interview_process, :company_lifestyle, :compensation, :management_mentorship, :diversity, :first_name, :last_name, :bootcamp, :city, :state, :company_id
+  belongs_to :company 
 end

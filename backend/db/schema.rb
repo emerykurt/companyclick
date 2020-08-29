@@ -24,9 +24,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_205602) do
   end
 
   create_table "ratings", force: :cascade do |t|
-    t.boolean "interview"
     t.string "interview_process"
-    t.boolean "hired"
     t.string "company_lifestyle"
     t.integer "compensation"
     t.string "management_mentorship"

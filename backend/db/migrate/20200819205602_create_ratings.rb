@@ -1,9 +1,7 @@
 class CreateRatings < ActiveRecord::Migration[6.0]
   def change
     create_table :ratings do |t|
-      t.boolean :interview
       t.string :interview_process
-      t.boolean :hired
       t.string :company_lifestyle
       t.integer :compensation
       t.string :management_mentorship
