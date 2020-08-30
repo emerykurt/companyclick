@@ -47,7 +47,7 @@ function addCompaniesToDom(response){
     enterArea.innerHTML = " "
     response.data.forEach( company => {
         enterArea.innerHTML += 
-        `<li class="indivCompInfo" id="${company.id}">
+        `<li class="company" data-id="${company.id}">
             ${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
             <label for="more-info" id="moreInfoText-${company.id}" class="moreInfoText" data-id="${company.id}">more...</label>
             <input type="checkbox" class="moreInfo" data-id="${company.id}"><br/>
@@ -267,19 +267,22 @@ function submitResults(e){
     })
 }
 
-function addReviewToDom(response){
+function addReviewToDom(r){
     // debugger
-    const infoSubmitted = `<div id="review-box">
-        Interview Process: ${response.attributes.interview_process}<br/>
-        Company Lifestyle: ${response.attributes.company_lifestyle}<br/>
-        Mentorship: ${response.attributes.management_mentorship}<br/>
-        Diversity: ${response.attributes.diversity}<br/>
-        <div id="review-identity"><br/>
-        -${response.attributes.first_name} ${response.attributes.last_name} (${response.attributes.bootcamp})<br/>
-        from: ${response.attributes.city}, ${response.attributes.state}
-        </div></div><br/><br/>
-        Thank you for your submission!`
+    const infoSubmitted = `
+        Interview Process: <span class="interviewProcess">${r.attributes.interview_process}</span><br/>
+        Company Lifestyle: <span class="companyLifestyle">${r.attributes.company_lifestyle}</span><br/>
+        Mentorship: <span class="mentorship">${r.attributes.management_mentorship}</span><br/>
+        Diversity: <span class="diversity">${r.attributes.diversity}</span><br/>
+        Compensation: $<spanclass="compensation">${r.attributes.compensation}</spanclass=><br/>
+        -<span class="firstName">${r.attributes.first_name}</span> <span class="lastName">${r.attributes.last_name}</span> <span class="bootcamp">(${r.attributes.bootcamp})</span><br/>
+        from: <span class="city">${r.attributes.city}</span>, <span class="state">${r.attributes.state}</span><br/>
+        <button class="delete" data-id="${r.id}">delete</button>
+        <button class="update" data-id="${r.id}">update</button>
+        <br/>`
     enterArea.innerHTML = infoSubmitted 
+    document.getElementsByClassName("delete").addEventListener('click', deleteReview())
+    document.getElementsByClassName("update").addEventListener('click', updateReview())
 }
 
 function fetchAllReviews(){
@@ -306,8 +309,6 @@ function addReviewsToDom(response){
                 from: ${review.attributes.city}, ${review.attributes.state}
                 </div>
             </li>
-            <button class="delete" data-id="${review.id}">delete</button>
-            <button class="update" data-id="${review.id}">update</button>
         </div><br/><br/>
         `})
 }
@@ -327,12 +328,12 @@ function deleteReview(e){
     .then(json => {
         alert(json.message)
     })
-    let reviewDelete = document.getElementById(`review-${e.dataset.id}`)
-    reviewDelete.remove()
-    
+    .then(fetchCompanies)   
 }
 
 function updateReview(e){
+    console.log("update")
+    debugger
     let reviewUpdate = document.getElementById(`review-${e.dataset.id}`)
 }
 
