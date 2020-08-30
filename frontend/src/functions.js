@@ -1,3 +1,5 @@
+const resToJson = (res) => res.json()
+
 const handleClickEvent = (e) => {
     // debugger
     if (e.target.className === "review-comp"){
@@ -21,32 +23,31 @@ const handleClickEvent = (e) => {
     } else if (e.target.id === "interviewCheckBox"){
         toggleInterview(e.target)
     }
-}//working
-const resToJson = (res) => res.json()
+}
 
 function fetchTop(){
     fetch('http://localhost:3000/companies/top_companies')
     .then(resToJson)
     .then(addTopToDom)
-} //working
+} 
 
 function addTopToDom(response){
     response.data.forEach( company => {
         topCompaniesList.innerHTML += `<li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}</li>`
     })
-}//working
+}
 
 function fetchCompanies(){
     fetch('http://localhost:3000/companies')
     .then(resToJson)
     .then(addCompaniesToDom)
-} //working
+}
 
 function addCompaniesToDom(response){
     enterArea.innerHTML = " "
     response.data.forEach( company => {
         enterArea.innerHTML += 
-        `<li id="${company.id}">
+        `<li class="indivCompInfo" id="${company.id}">
             ${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
             <label for="more-info" id="moreInfoText-${company.id}" class="moreInfoText" data-id="${company.id}">more...</label>
             <input type="checkbox" class="moreInfo" data-id="${company.id}"><br/>
@@ -58,8 +59,7 @@ function addCompaniesToDom(response){
             <button class="review-comp" data-id="${company.id}">Write a Review</button><br/><br/>
         </li>`
     }) 
-    // return response.data   
-}  // working
+} 
 
 const toggleMoreInfo = (e) => {
     // debugger
@@ -221,18 +221,6 @@ const toggleHired = (e) => {
     }
 }
 
-// function renderQuiz(){
-//     console.log("The quiz is on FYAH")
-//     enterArea.innerHTML = " "
-//             enterArea.innerHTML =
-//                 `<div id="quiz"></div>
-//                 <button id="submit">Get Results</button>
-//                 <div id="results"></div>`
-// }
-// function buildQuiz(){
-//     const myQuestions = []
-// }
-
 function submitResults(e){
     // debugger
     e.preventDefault()
@@ -274,12 +262,9 @@ function submitResults(e){
 
     fetch('http://localhost:3000/ratings', configObj)
     .then(resToJson)
-    // .then(init())
     .then(response => {
         addReviewToDom(response.data)
     })
-    // .then(response => {
-    //     addReviewToDom(response.data)})
 }
 
 function addReviewToDom(response){
@@ -328,7 +313,6 @@ function addReviewsToDom(response){
 }
 
 function deleteReview(e){
-    // id="review-${review.id}
     // debugger
     let configObj = {
         method: 'DELETE',
@@ -349,11 +333,9 @@ function deleteReview(e){
 }
 
 function updateReview(e){
-    //id="review-${review.id}
     let reviewUpdate = document.getElementById(`review-${e.dataset.id}`)
 }
 
-// const indivCompBtn = document.getElementsByClassName(".individualComp").addEventListener('click', fetchIndivComp)
 function fetchIndivComp(e){
     // debugger
     fetch(`http://localhost:3000/companies/${e.target.value}`)
@@ -364,7 +346,7 @@ function fetchIndivComp(e){
 function addIndivToDom(r){
     // debugger
     const indivInfo = `
-    <div class="infoIndiv" id="${r.data.id}">
+    <div class="indivCompInfo" id="${r.data.id}">
        <h3>${r.data.attributes.name} </h3>
             <strong>Mission Statement:</strong> ${r.data.attributes.mission_statement}<br/>
             <strong>HQ: ${r.data.attributes.hq_city}, ${r.data.attributes.hq_state}</strong><br/><br/>
