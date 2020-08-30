@@ -15,7 +15,16 @@ const handleClickEvent = (e) => {
     } else if(e.target.className === "delete"){
         deleteReview(e.target)
     } else if(e.target.className === "update"){
-        updateReview(e.target) 
+        debugger
+        e.target.className = "save"
+        e.target.innerText = "save"
+        updateReview(e) 
+    } else if (e.target.className === "save"){
+        debugger
+        let revId = e.target.dataset.id
+        e.target.className = "update"
+        e.target.innerText = "update"
+        submitUpdate(revId)
     } else if (e.target === companiesList){
         fetchCompanies()
     } else if (e.target.id === "hiredCheckBox"){
@@ -202,7 +211,7 @@ const toggleHired = (e) => {
         </select><br/>
         <label for="compensation">Compensation (this information will not be displayed or connected with your name):</label>
         <input type="number" min="50000.00" step="5.00" name="compensation" id="compensation"><br/>
-        <label for="management-mentorship">Management/Mentorship:</label>
+        <label for="management-mentorship">Mentorship:</label>
         <select name="managementMentorship" id="managementMentorship" form="signUpForm">
             <option value=" "> </option>
             <option value="yes">yes</option>
@@ -268,21 +277,23 @@ function submitResults(e){
 }
 
 function addReviewToDom(r){
-    // debugger
+    debugger
     const infoSubmitted = `
-        Interview Process: <span class="interviewProcess">${r.attributes.interview_process}</span><br/>
-        Company Lifestyle: <span class="companyLifestyle">${r.attributes.company_lifestyle}</span><br/>
-        Mentorship: <span class="mentorship">${r.attributes.management_mentorship}</span><br/>
-        Diversity: <span class="diversity">${r.attributes.diversity}</span><br/>
-        Compensation: $<spanclass="compensation">${r.attributes.compensation}</spanclass=><br/>
-        -<span class="firstName">${r.attributes.first_name}</span> <span class="lastName">${r.attributes.last_name}</span> <span class="bootcamp">(${r.attributes.bootcamp})</span><br/>
-        from: <span class="city">${r.attributes.city}</span>, <span class="state">${r.attributes.state}</span><br/>
-        <button class="delete" data-id="${r.id}">delete</button>
-        <button class="update" data-id="${r.id}">update</button>
-        <br/>`
+        <div id="review-${r.id}>
+            Interview Process: <span class="interviewProcess">${r.attributes.interview_process}</span><br/>
+            Company Lifestyle: <span class="companyLifestyle">${r.attributes.company_lifestyle}</span><br/>
+            Mentorship: <span class="mentorship">${r.attributes.management_mentorship}</span><br/>
+            Diversity: <span class="diversity">${r.attributes.diversity}</span><br/>
+            Compensation: $<spanclass="compensation">${r.attributes.compensation}</spanclass=><br/>
+            -<span class="firstName">${r.attributes.first_name}</span> <span class="lastName">${r.attributes.last_name}</span> <span class="bootcamp">(${r.attributes.bootcamp})</span><br/>
+            from: <span class="city">${r.attributes.city}</span>, <span class="state">${r.attributes.state}</span><br/>
+            <button class="delete" data-id="${r.id}">delete</button>
+            <button class="update" data-id="${r.id}">update</button>
+            <br/>
+        </div>`
     enterArea.innerHTML = infoSubmitted 
     document.getElementsByClassName("delete").addEventListener('click', deleteReview())
-    document.getElementsByClassName("update").addEventListener('click', updateReview())
+    document.getElementsByClassName("update").addEventListener('click', updateReview(e))
 }
 
 function fetchAllReviews(){
@@ -331,12 +342,6 @@ function deleteReview(e){
     .then(fetchCompanies)   
 }
 
-function updateReview(e){
-    console.log("update")
-    debugger
-    let reviewUpdate = document.getElementById(`review-${e.dataset.id}`)
-}
-
 function fetchIndivComp(e){
     // debugger
     fetch(`http://localhost:3000/companies/${e.target.value}`)
@@ -359,4 +364,135 @@ function addIndivToDom(r){
     const infoSpace = document.getElementById("indivInfoSpace")
     infoSpace.innerHTML = " "
     infoSpace.innerHTML = indivInfo
+}
+
+
+
+/////////////////////////////////////WIP//////////////////////////////////////
+
+function updateReview(r){
+    console.log("update")
+    debugger
+    let review = document.querySelector(`#review-${r.target.dataset.id}`)
+    let interviewProcess = review.querySelector('.interviewProcess').innerText
+    let companyLifestyle = review.querySelector('.companyLifestyle').innerText
+    let compensation = review.querySelector('.compensation').innerText
+    let mentorship = review.querySelector('.mentorship').innerText
+    let diversity = review.querySelector('.diversity').innerText
+    let firstName = review.querySelector('.firstName').innerText
+    let lastName = review.querySelector('.lastName').innerText
+    let bootcamp = review.querySelector('.bootcamp').innerText
+    let city = review.querySelector('.city').innerText
+    let state = review.querySelector('.state').innerText
+
+    let updateForm = `
+        First Name: <input type="text" name="firstName" value="${firstName}" id="firstName-update-${r.target.dataset.id}">
+        Last Name: <input type="text" name="last_name" value="${lastName}" id="lastName-update-${r.target.dataset.id}">
+        City: <input type="text" name="city" value="${city}" id="city-update-${r.target.dataset.id}">
+        State: <input type="text" name="state" value="${state}" id="state-update-${r.target.dataset.id}">
+        Bootcamp: <select name="bootcamp" value="${bootcamp}" id="bootcamp-update-${r.target.dataset.id}" form="company-review">
+            <option value=" "> </option>
+            <option value="FlatIron">FlatIron</option>
+            <option value="General Assembly">General Assembly</option>
+            <option value="Kenzie Academy">Kenzie Academy</option>
+            <option value="Thinkful">Thinkful</option>
+            <option value="Springboard">Springboard</option>
+            <option value="App Academy">App Academy</option>
+            <option value="Ironhack">Ironhack</option>
+            <option value="Le Wagon">Le Wagon</option>
+            <option value="CareerFoundary">CareerFoundary</option>
+            <option value="Nucamp">Nucamp</option>
+            <option value="Code Institute">Code Institute</option>
+            <option value="Lambda School">Lambda School</option>
+            <option value="other">other</option>
+        </select>
+        Interview Process <select name="interviewProcess" value="${interviewProcess}" id="interviewProcess-update-${r.target.dataset.id}" form="company-review">
+            <option value=" "> </option>
+            <option value="easy">easy</option>
+            <option value="moderate">moderate</option>
+            <option value="extensive">extensive</option>
+        </select>
+        Company Lifestyle: <select name="companyLifestyle" value="${companyLifestyle}" id="companyLifestyle-update-${r.target.dataset.id}" form="signUpForm">
+            <option value=" "> </option>
+            <option value="innovative">innovative</option>
+            <option value="challenging">challenging</option>
+            <option value="progressive">progressive</option>
+            <option value="micromanaged">micromanaged</option>
+            <option value="flexible">flexible</option>
+            <option value="problematic">problematic</option>
+        </select>
+        Compensation (this information is for research purposes): <input type="number" min="50000.00" step="5.00" name="compensation" value="${compensation}" id="compensation-update-${r.target.dataset.id}">
+        Mentorship:<select name="mentorship" value="${mentorship}" id="mentorship-update-${r.target.dataset.id}" form="signUpForm">
+            <option value=" "> </option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select>
+        Diversity: <select name="diversity" value="${diversity}" id="diversity-update-${r.target.dataset.id}" form="signUpForm">
+        <option value=" "> </option>
+        <option value="yes">yes</option>
+        <option value="no">no</option>
+        </select>
+    `
+    let formDiv = document.createElement('div')
+    formDiv.id = `update-form-${r.target.dataset.id}`
+    formDiv.innerHTML = updateForm
+    review.append(formDiv)
+}
+
+function submitUpdate(revId){
+    debugger
+    const interviewProcess = document.getElementById(`interviewProcess-update-${revId}`)
+    const companyLifestyle = document.getElementById(`companyLifestyle-update-${revId}`)
+    const compensation = document.getElementById(`compensation-update-${revId}`)
+    const managementMentorship = document.getElementById(`mentorship-update-${revId}`)
+    const diversity = document.getElementById(`diversity-update-${revId}`) 
+    const firstName = document.getElementById(`firstName-update-${revId}`)
+    const lastName = document.getElementById(`lastName-update-${revId}`)
+    const bootcamp = document.getElementById(`bootcamp-update-${revId}`)
+    const city = document.getElementById(`city-update-${revId}`)
+    const state = document.getElementById(`state-update-${revId}`)
+
+    let newInfoObj = {
+        interview_process: interviewProcess.value,
+        company_lifestyle: companyLifestyle.value,
+        compensation: compensation.value,
+        management_mentorship: mentorship.value,
+        diversity: diversity.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
+        bootcamp: bootcamp.value,
+        city: city.value,
+        state: state.value,
+    }
+
+    let configObj = {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify(newInfoObj)
+    }
+
+    fetch(`http://localhost:3000/ratings/${revId}`, configObj)
+    .then(resToJson)
+    .then(response => updateReviewOnDom(response.data))
+
+    let form = document.getElementById(`update-form-${revId}`)
+    form.remove()
+}
+
+function updateReviewOnDom(res){
+    debugger
+    let updateInfo = document.querySelector(`#review-${res.id}`)
+    updateInfo.querySelector('.interviewProcess').innerText = res.attributes.interview_process
+    updateInfo.querySelector('.companyLifestyle').innerText
+    updateInfo.querySelector('.compensation').innerText
+    updateInfo.querySelector('.mentorship').innerText
+    updateInfo.querySelector('.diversity').innerText
+    updateInfo.querySelector('.firstName').innerText
+    updateInfo.querySelector('.lastName').innerText
+    updateInfo.querySelector('.bootcamp').innerText
+    updateInfo.querySelector('.city').innerText
+    updateInfo.querySelector('.state').innerText
 }
