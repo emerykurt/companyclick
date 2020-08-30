@@ -22,10 +22,11 @@ const handleClickEvent = (e) => {
         toggleInterview(e.target)
     }
 }//working
+const resToJson = (res) => res.json()
 
 function fetchTop(){
     fetch('http://localhost:3000/companies/top_companies')
-    .then(res => res.json())
+    .then(resToJson)
     .then(addTopToDom)
 } //working
 
@@ -37,7 +38,7 @@ function addTopToDom(response){
 
 function fetchCompanies(){
     fetch('http://localhost:3000/companies')
-    .then(res => res.json())
+    .then(resToJson)
     .then(addCompaniesToDom)
 } //working
 
@@ -272,7 +273,7 @@ function submitResults(e){
     }
 
     fetch('http://localhost:3000/ratings', configObj)
-    .then(res => res.json())
+    .then(resToJson)
     // .then(init())
     .then(response => {
         addReviewToDom(response.data)
@@ -298,7 +299,7 @@ function addReviewToDom(response){
 
 function fetchAllReviews(){
     fetch('http://localhost:3000/ratings')
-    .then(res => res.json())
+    .then(resToJson)
     .then(response => {
         addReviewsToDom(response.data)
     })
@@ -338,8 +339,7 @@ function deleteReview(e){
     }
 
     fetch(`http://localhost:3000/ratings/${e.dataset.id}`, configObj)
-    .then(res => res.json())
-    // .then(init())
+    .then(resToJson)
     .then(json => {
         alert(json.message)
     })
@@ -351,4 +351,29 @@ function deleteReview(e){
 function updateReview(e){
     //id="review-${review.id}
     let reviewUpdate = document.getElementById(`review-${e.dataset.id}`)
+}
+
+// const indivCompBtn = document.getElementsByClassName(".individualComp").addEventListener('click', fetchIndivComp)
+function fetchIndivComp(e){
+    // debugger
+    fetch(`http://localhost:3000/companies/${e.target.value}`)
+    .then(resToJson)
+    .then(addIndivToDom)
+}
+
+function addIndivToDom(r){
+    // debugger
+    const indivInfo = `
+    <div class="infoIndiv" id="${r.data.id}">
+       <h3>${r.data.attributes.name} </h3>
+            <strong>Mission Statement:</strong> ${r.data.attributes.mission_statement}<br/>
+            <strong>HQ: ${r.data.attributes.hq_city}, ${r.data.attributes.hq_state}</strong><br/><br/>
+            <button class="companyApply" data-id="${r.data.attributes.website}">Apply Here</button>
+            <button class="companyTwitter" data-id="${r.data.attributes.twitter}">Twitter</button><br/>
+            <button class="review-comp" data-id="${r.data.id}">Write a Review</button><br/><br/>
+    </div>
+    `
+    const infoSpace = document.getElementById("indivInfoSpace")
+    infoSpace.innerHTML = " "
+    infoSpace.innerHTML = indivInfo
 }
