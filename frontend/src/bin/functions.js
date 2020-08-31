@@ -270,12 +270,12 @@ deleteReview = (e) => {
     .then(fetchCompanies)   
 }
 
-function fetchIndivComp(e){
-    // debugger
-    fetch(`http://localhost:3000/companies/${e.target.value}`)
-    .then(resToJson)
-    .then(addIndivToDom)
-}
+// function fetchIndivComp(e){
+//     // debugger
+//     fetch(`http://localhost:3000/companies/${e.target.value}`)
+//     .then(resToJson)
+//     .then(addIndivToDom)
+// }
 
 function addIndivToDom(r){
     // debugger

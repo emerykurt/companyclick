@@ -18,14 +18,34 @@ class Ratings{
 
         this.element = document.createElement('div')
         this.element.id = `review-${this.id}`
-        this.enterArea = document.getElementById("enter-area")
-        this.enterArea.addEventListener('click', this.handleReviewClicks)
+        this.enterBody = document.getElementById("enter-area")
+        this.enterBody.addEventListener('click', Ratings.handleReviewClicks)
         
 
         // this.allReviewsBtn = document.getElementById('all-companiesReviews');
         // this.allreviewsBtn = document.getElementById('all-companies-reviews');
 
         Ratings.all.push(this)
+    }
+
+    static handleReviewClicks = (e) => {
+        debugger
+        if (e.target.className === "update"){
+            let review = Ratings.findbyId(id)
+            review.updateReview(e) 
+        } else if (e.target.className === "save"){
+            // debugger
+            let revId = e.target.dataset.id
+            e.target.className = "update"
+            e.target.innerText = "update"
+            submitUpdate(revId)
+        } else if (e.target.id === "hiredCheckBox"){
+            toggleHired(e.target)
+        } else if (e.target.id === "interviewCheckBox"){
+            toggleInterview(e.target)
+        } else if(e.target.className === "delete"){
+            deleteReview(e.target.dataset)
+        }
     }
     
     attachToDom(){
@@ -114,32 +134,5 @@ class Ratings{
         this.formDiv.id = `update-form-${e.id}`
         this.formDiv.innerHTML = this.updateForm
         review.append(formDiv)
-    }
-
-    addEventListeners(){
-        document.addEventListener('click', this.handleReviewClicks(e))
-    }
-
-    handleReviewClicks = (e) => {
-        // debugger
-        if (e.target.className === "review-comp"){
-            writeReview(e.target)
-        } else if (e.target.id === "sign-up-submit"){
-            submitResults(e)
-        } else if(e.target.className === "update"){
-            this.updateReview(e) 
-        } else if (e.target.className === "save"){
-            // debugger
-            let revId = e.target.dataset.id
-            e.target.className = "update"
-            e.target.innerText = "update"
-            submitUpdate(revId)
-        } else if (e.target.id === "hiredCheckBox"){
-            toggleHired(e.target)
-        } else if (e.target.id === "interviewCheckBox"){
-            toggleInterview(e.target)
-        } else if(e.target.className === "delete"){
-            deleteReview(e.target.dataset)
-        }
     }
 }

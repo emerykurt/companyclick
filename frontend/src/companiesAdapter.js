@@ -26,5 +26,15 @@ class CompaniesAdapter{
         })
     }
 
+    fetchCompanies = () => {
+        fetch(this.baseurl)
+        .then(res => res.json())
+        .then(json => {
+            // debugger
+            let companies = new Companies(json.data)
+            companies.addCompToDom(json.data)
+        })
+    }
+
     
 }
