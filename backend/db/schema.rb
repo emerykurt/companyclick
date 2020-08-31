@@ -24,13 +24,13 @@ ActiveRecord::Schema.define(version: 2020_08_19_205602) do
   end
 
   create_table "ratings", force: :cascade do |t|
-    t.string "interview_process"
-    t.string "company_lifestyle"
+    t.string "process"
+    t.string "lifestyle"
     t.integer "compensation"
-    t.string "management_mentorship"
+    t.string "mentorship"
     t.string "diversity"
-    t.string "first_name"
-    t.string "last_name"
+    t.string "fname"
+    t.string "lname"
     t.string "bootcamp"
     t.string "city"
     t.string "state"

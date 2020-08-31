@@ -1,50 +1,47 @@
 const resToJson = (res) => res.json()
+// const ratingsAdapter = new RatingsAdapter
+// const companiesAdapter = new CompaniesAdapter
+// const handleClickEvent = (e) => {
+//     // debugger
+//     if (e.target.className === "review-comp"){
+//         writeReview(e.target)
+//     } else if (e.target.id === "sign-up-submit"){
+//         submitResults(e)
+//     } else if(e.target.className === "moreInfo"){
+//         toggleMoreInfo(e.target) 
+//     } else if(e.target.className === "companyApply"){
+//         applyLink(e.target) 
+//     } else if(e.target.className === "companyTwitter"){
+//         twitterLink(e.target)
+//     } else if(e.target.className === "delete"){
+//         deleteReview(e.target)
+//     } else if(e.target.className === "update"){
+//         // debugger
+//         e.target.className = "save"
+//         e.target.innerText = "save"
+//         updateReview(e) 
+//     } else if (e.target.className === "save"){
+//         // debugger
+//         let revId = e.target.dataset.id
+//         e.target.className = "update"
+//         e.target.innerText = "update"
+//         submitUpdate(revId)
+//     } else if (e.target === companiesList){
+//         fetchCompanies()
+//     } else if (e.target.id === "hiredCheckBox"){
+//         toggleHired(e.target)
+//     } else if (e.target.id === "interviewCheckBox"){
+//         toggleInterview(e.target)
+//     }
+// }
 
-const handleClickEvent = (e) => {
-    // debugger
-    if (e.target.className === "review-comp"){
-        writeReview(e.target)
-    } else if (e.target.id === "sign-up-submit"){
-        submitResults(e)
-    } else if(e.target.className === "moreInfo"){
-        toggleMoreInfo(e.target) 
-    } else if(e.target.className === "companyApply"){
-        applyLink(e.target) 
-    } else if(e.target.className === "companyTwitter"){
-        twitterLink(e.target)
-    } else if(e.target.className === "delete"){
-        deleteReview(e.target)
-    } else if(e.target.className === "update"){
-        debugger
-        e.target.className = "save"
-        e.target.innerText = "save"
-        updateReview(e) 
-    } else if (e.target.className === "save"){
-        debugger
-        let revId = e.target.dataset.id
-        e.target.className = "update"
-        e.target.innerText = "update"
-        submitUpdate(revId)
-    } else if (e.target === companiesList){
-        fetchCompanies()
-    } else if (e.target.id === "hiredCheckBox"){
-        toggleHired(e.target)
-    } else if (e.target.id === "interviewCheckBox"){
-        toggleInterview(e.target)
-    }
-}
+// function fetchTop(){
+//     fetch('http://localhost:3000/companies/top_companies')
+//     .then(resToJson)
+//     .then(addTopToDom)
+// } 
 
-function fetchTop(){
-    fetch('http://localhost:3000/companies/top_companies')
-    .then(resToJson)
-    .then(addTopToDom)
-} 
 
-function addTopToDom(response){
-    response.data.forEach( company => {
-        topCompaniesList.innerHTML += `<li id="company-${company.id}">${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}</li>`
-    })
-}
 
 function fetchCompanies(){
     fetch('http://localhost:3000/companies')
@@ -247,13 +244,13 @@ function submitResults(e){
     const companyId = document.getElementById("companyId")
 
     let newInfoObj = {
-        interview_process: interviewProcess.value,
-        company_lifestyle: companyLifestyle.value,
+        process: interviewProcess.value,
+        lifestyle: companyLifestyle.value,
         compensation: compensation.value,
-        management_mentorship: managementMentorship.value,
+        mentorship: managementMentorship.value,
         diversity: diversity.value,
-        first_name: firstName.value,
-        last_name: lastName.value,
+        fname: firstName.value,
+        lname: lastName.value,
         bootcamp: bootcamp.value,
         city: city.value,
         state: state.value,
@@ -277,15 +274,15 @@ function submitResults(e){
 }
 
 function addReviewToDom(r){
-    debugger
+    // debugger
     const infoSubmitted = `
         <div id="review-${r.id}>
-            Interview Process: <span class="interviewProcess">${r.attributes.interview_process}</span><br/>
-            Company Lifestyle: <span class="companyLifestyle">${r.attributes.company_lifestyle}</span><br/>
-            Mentorship: <span class="mentorship">${r.attributes.management_mentorship}</span><br/>
+            Interview Process: <span class="interviewProcess">${r.attributes.process}</span><br/>
+            Company Lifestyle: <span class="companyLifestyle">${r.attributes.lifestyle}</span><br/>
+            Mentorship: <span class="mentorship">${r.attributes.mentorship}</span><br/>
             Diversity: <span class="diversity">${r.attributes.diversity}</span><br/>
             Compensation: $<spanclass="compensation">${r.attributes.compensation}</spanclass=><br/>
-            -<span class="firstName">${r.attributes.first_name}</span> <span class="lastName">${r.attributes.last_name}</span> <span class="bootcamp">(${r.attributes.bootcamp})</span><br/>
+            -<span class="firstName">${r.attributes.fname}</span> <span class="lastName">${r.attributes.lname}</span> <span class="bootcamp">(${r.attributes.bootcamp})</span><br/>
             from: <span class="city">${r.attributes.city}</span>, <span class="state">${r.attributes.state}</span><br/>
             <button class="delete" data-id="${r.id}">delete</button>
             <button class="update" data-id="${r.id}">update</button>
@@ -296,36 +293,36 @@ function addReviewToDom(r){
     document.getElementsByClassName("update").addEventListener('click', updateReview(e))
 }
 
-function fetchAllReviews(){
-    fetch('http://localhost:3000/ratings')
-    .then(resToJson)
-    .then(response => {
-        addReviewsToDom(response.data)
-    })
-}
+// function fetchAllReviews(){
+//     fetch('http://localhost:3000/ratings')
+//     .then(resToJson)
+//     .then(response => {
+//         addReviewsToDom(response.data)
+//     })
+// }
 
-function addReviewsToDom(response){
-    // debugger
-    enterArea.innerHTML = " "
-    response.forEach( review => {
-        enterArea.innerHTML += 
-        `<div id="review-${review.id}">
-            <li>
-            Interview Process: ${review.attributes.interview_process}<br/>
-            Company Lifestyle: ${review.attributes.company_lifestyle}<br/>
-            Mentorship: ${review.attributes.management_mentorship}<br/>
-            Diversity: ${review.attributes.diversity}<br/>
-                <div id="review-identity"><br/>
-                -${review.attributes.first_name} ${review.attributes.last_name} (${review.attributes.bootcamp})<br/>
-                from: ${review.attributes.city}, ${review.attributes.state}
-                </div>
-            </li>
-        </div><br/><br/>
-        `})
-}
+// function addReviewsToDom(response){
+//     // debugger
+//     enterArea.innerHTML = " "
+//     response.forEach( review => {
+//         enterArea.innerHTML += 
+//         `<div id="review-${review.id}">
+//             <li>
+//             Interview Process: ${review.attributes.process}<br/>
+//             Company Lifestyle: ${review.attributes.lifestyle}<br/>
+//             Mentorship: ${review.attributes.mentorship}<br/>
+//             Diversity: ${review.attributes.diversity}<br/>
+//                 <div id="review-identity"><br/>
+//                 -${review.attributes.first_name} ${review.attributes.last_name} (${review.attributes.bootcamp})<br/>
+//                 from: ${review.attributes.city}, ${review.attributes.state}
+//                 </div>
+//             </li>
+//         </div><br/><br/>
+//         `})
+// }
 
 function deleteReview(e){
-    // debugger
+    debugger
     let configObj = {
         method: 'DELETE',
         headers: {
@@ -372,7 +369,7 @@ function addIndivToDom(r){
 
 function updateReview(r){
     console.log("update")
-    debugger
+    // debugger
     let review = document.querySelector(`#review-${r.target.dataset.id}`)
     let interviewProcess = review.querySelector('.interviewProcess').innerText
     let companyLifestyle = review.querySelector('.companyLifestyle').innerText
@@ -440,7 +437,7 @@ function updateReview(r){
 }
 
 function submitUpdate(revId){
-    debugger
+    // debugger
     const interviewProcess = document.getElementById(`interviewProcess-update-${revId}`)
     const companyLifestyle = document.getElementById(`companyLifestyle-update-${revId}`)
     const compensation = document.getElementById(`compensation-update-${revId}`)
@@ -453,10 +450,10 @@ function submitUpdate(revId){
     const state = document.getElementById(`state-update-${revId}`)
 
     let newInfoObj = {
-        interview_process: interviewProcess.value,
-        company_lifestyle: companyLifestyle.value,
+        process: interviewProcess.value,
+        lifestyle: companyLifestyle.value,
         compensation: compensation.value,
-        management_mentorship: mentorship.value,
+        mentorship: mentorship.value,
         diversity: diversity.value,
         first_name: firstName.value,
         last_name: lastName.value,
@@ -483,9 +480,9 @@ function submitUpdate(revId){
 }
 
 function updateReviewOnDom(res){
-    debugger
+    // debugger
     let updateInfo = document.querySelector(`#review-${res.id}`)
-    updateInfo.querySelector('.interviewProcess').innerText = res.attributes.interview_process
+    updateInfo.querySelector('.interviewProcess').innerText = res.attributes.process
     updateInfo.querySelector('.companyLifestyle').innerText
     updateInfo.querySelector('.compensation').innerText
     updateInfo.querySelector('.mentorship').innerText

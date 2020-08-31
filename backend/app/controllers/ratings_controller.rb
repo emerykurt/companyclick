@@ -27,7 +27,7 @@ class RatingsController < ApplicationController
   def destroy
     rating = Rating.find(params[:id])
     rating.destroy
-    render json: {message: "Successfully deleted the rating of #{rating.first_name} about #{rating.company.name}!"}
+    render json: {message: "Successfully deleted the rating of #{rating.fname} about #{rating.company.name}!"}
   end
 
   def top_review
@@ -35,6 +35,6 @@ class RatingsController < ApplicationController
 
   private
   def rating_params
-    params.require(:rating).permit(:interview_process, :company_lifestyle, :compensation, :management_mentorship, :diversity, :first_name, :last_name, :bootcamp, :city, :state, :company_id)
+    params.require(:rating).permit(:process, :lifestyle, :compensation, :mentorship, :diversity, :fname, :lname, :bootcamp, :city, :state, :company_id)
   end
 end
