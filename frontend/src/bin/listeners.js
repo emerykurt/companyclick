@@ -1,5 +1,2 @@
-// document.addEventListener('click', handleReviewClicks())
-// allReviewsBtn.addEventListener('click', fetchAllReviews())
 allcompaniesBtn.addEventListener('click', fetchCompanies)
-document.querySelector("select").addEventListener('change', fetchIndivComp)
 ratingsAdapter.fetchAllReviews()

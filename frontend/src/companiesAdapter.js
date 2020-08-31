@@ -19,8 +19,11 @@ class CompaniesAdapter{
     fetchIndivComp = (e) => {
         // debugger
         fetch(this.baseurl + `/${e.target.value}`)
-        .then(resToJson)
-        .then(addIndivToDom)
+        .then(res => res.json())
+        .then( json => {
+            let company = new Companies(json.data)
+            company.addIndivComp(json.data)
+        })
     }
 
     
