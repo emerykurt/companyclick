@@ -32,9 +32,8 @@ class CompaniesAdapter{
         .then(json => {
             // debugger
             let companies = new Companies(json.data)
-            companies.addCompToDom(json.data)
+            companies.addCompsToDom(json.data)
         })
     }
-
     
 }

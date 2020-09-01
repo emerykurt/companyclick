@@ -4,26 +4,74 @@ class RatingsAdapter{
         this.baseurl = "http://localhost:3000/ratings"
     }
 
-    fetchAllReviews(){
-        fetch(this.baseurl)
+    fetchAllReviews = () => {
+        fetch("http://localhost:3000/ratings")
         .then(res => res.json())
         .then(json => {
-            json.data.forEach((e) =>{
-                let rating = new Ratings(e.attributes)
-            })
+            let rating = new Ratings(json.data)
+            rating.addAllReviews(json.data)
         })
     }
+
+    postResults = (e) => {
+        // debugger
+        e.preventDefault()
+        const interviewProcess = document.getElementById("interviewProcess")
+        const companyLifestyle = document.getElementById("companyLifestyle")
+        const compensation = document.getElementById("compensation")
+        const managementMentorship = document.getElementById("managementMentorship")
+        const diversity = document.getElementById("diversity") 
+        const firstName = document.getElementById("firstName")
+        const lastName = document.getElementById("lastName")
+        const bootcamp = document.getElementById("bootcamp")
+        const city = document.getElementById("city")
+        const state = document.getElementById("state")
+        const companyId = document.getElementById("companyId")
+
+        let newInfoObj = {
+            process: interviewProcess.value,
+            lifestyle: companyLifestyle.value,
+            compensation: compensation.value,
+            mentorship: managementMentorship.value,
+            diversity: diversity.value,
+            fname: firstName.value,
+            lname: lastName.value,
+            bootcamp: bootcamp.value,
+            city: city.value,
+            state: state.value,
+            company_id: companyId.value 
+        }
+
+        let configObj = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify(newInfoObj)
+        }
+
+        fetch('http://localhost:3000/ratings', configObj)
+        .then(res => res.json().then(json =>{
+            let rating = new Ratings(json.data)
+            rating.addReviewToDom(json.data)
+        }))
+        return
+    }
+
     sendPatchRequest(e){
-        const process = document.getElementById(`interviewProcess-update-${e}`)
-        const lifestyle = document.getElementById(`companyLifestyle-update-${e}`)
-        const compensation = document.getElementById(`compensation-update-${e}`)
-        const mentorship = document.getElementById(`mentorship-update-${e}`)
-        const diversity = document.getElementById(`diversity-update-${e}`) 
-        const fname = document.getElementById(`firstName-update-${e}`)
-        const lname = document.getElementById(`lastName-update-${e}`)
-        const bootcamp = document.getElementById(`bootcamp-update-${e}`)
-        const city = document.getElementById(`city-update-${e}`)
-        const state = document.getElementById(`state-update-${e}`)
+        // debugger
+        e.preventDefault()
+        let process = e.currentTarget.parentElement.children[10].value
+        let lifestyle = e.currentTarget.parentElement.children[12].value
+        let compensation = e.currentTarget.parentElement.children[14].value
+        let mentorship = e.currentTarget.parentElement.children[16].value
+        let diversity = e.currentTarget.parentElement.children[18].value
+        let fname = e.currentTarget.parentElement.children[0].value
+        let lname = e.currentTarget.parentElement.children[2].value
+        let bootcamp = e.currentTarget.parentElement.children[8].value
+        let city = e.currentTarget.parentElement.children[4].value
+        let state = e.currentTarget.parentElement.children[6].value
 
         let newInfoObj = {
             process,
@@ -47,21 +95,35 @@ class RatingsAdapter{
             body: JSON.stringify(newInfoObj)
         }
 
-        fetch(this.baseUrl + `/${e}`, configObj)
-        .then(res => res.json())
-        .then(response => {
-            let form = Ratings.all.find((r) => r.id === response.data.attributes.id)
-            form.updateReviewOnDom(response.data.attributes)
+        fetch("http://localhost:3000/ratings" + `/${e.currentTarget.dataset.id}`, configObj)
+        .then(res => res.json()).then(json => {
+            let rating = new Ratings(json.data)
+            rating.addReviewToDom(json.data)
+            // let form = Ratings.all.find((r) => r.id === response.data.attributes.id)
+            // form.updateReviewOnDom(response.data.attributes)
         })
 
-        let form = document.getElementById(`update-form-${e}`)
-        form.remove
+        // let form = document.getElementById(`update-form-${e.currentTarget.dataset.id}`)
+        // form.remove
     }
 
-    fetchIndivComp(e){
+    deleteReview = (e) => {
         // debugger
-        fetch(`http://localhost:3000/companies/${e.id}`)
+        let configObj = {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            }
+        }
+    
+        fetch(`http://localhost:3000/ratings/${e.id}`, configObj)
         .then(res => res.json())
-        .then(addIndivToDom())
+        .then(json => {
+            alert(json.message)
+        })
+        // .then( () => {
+        //     restart()
+        // }) 
     }
 }

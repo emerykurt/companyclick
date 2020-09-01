@@ -11,17 +11,18 @@ class RatingsController < ApplicationController
 
   def index
     ratings = Rating.all
-    options = {
-      include: [:company]
-    }
-    render json: RatingSerializer.new(ratings, options)
+    render json: RatingSerializer.new(ratings)
   end
 
   def update
     rating = Rating.find(params[:id])
+    rating.update(rating_params)
+    render json: RatingSerializer.new(rating)
   end
 
   def show
+    rating = Rating.find(params[:id])
+    render json: RatingSerializer.new(rating)
   end
 
   def destroy
