@@ -122,8 +122,8 @@ class RatingsAdapter{
         .then(json => {
             alert(json.message)
         })
-        // .then( () => {
-        //     restart()
-        // }) 
+        .then( () => {
+            restart()
+        }) 
     }
 }
