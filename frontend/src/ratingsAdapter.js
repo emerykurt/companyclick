@@ -2,19 +2,22 @@ class RatingsAdapter{
 
     constructor(){
         this.baseurl = "http://localhost:3000/ratings"
+        this.enterArea = document.getElementById("enter-area")
     }
 
     fetchAllReviews = () => {
+        this.enterArea.innerHTML = " "
         fetch("http://localhost:3000/ratings")
         .then(res => res.json())
         .then(json => {
-            let rating = new Ratings(json.data)
-            rating.addAllReviews(json.data)
+            json.data.forEach ((e) => {
+                let rating = new Ratings(e.attributes)
+                rating.attachToDom()
+            })  
         })
     }
 
     postResults = (e) => {
-        // debugger
         e.preventDefault()
         const interviewProcess = document.getElementById("interviewProcess")
         const companyLifestyle = document.getElementById("companyLifestyle")
@@ -60,7 +63,6 @@ class RatingsAdapter{
     }
 
     sendPatchRequest(e){
-        // debugger
         e.preventDefault()
         let process = e.currentTarget.parentElement.children[10].value
         let lifestyle = e.currentTarget.parentElement.children[12].value
@@ -99,16 +101,10 @@ class RatingsAdapter{
         .then(res => res.json()).then(json => {
             let rating = new Ratings(json.data)
             rating.addReviewToDom(json.data)
-            // let form = Ratings.all.find((r) => r.id === response.data.attributes.id)
-            // form.updateReviewOnDom(response.data.attributes)
         })
-
-        // let form = document.getElementById(`update-form-${e.currentTarget.dataset.id}`)
-        // form.remove
     }
 
     deleteReview = (e) => {
-        // debugger
         let configObj = {
             method: 'DELETE',
             headers: {
@@ -122,8 +118,6 @@ class RatingsAdapter{
         .then(json => {
             alert(json.message)
         })
-        .then( () => {
-            restart()
-        }) 
+        .then(main()) 
     }
 }

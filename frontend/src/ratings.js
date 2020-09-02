@@ -1,7 +1,5 @@
 class Ratings{
 
-    static all = []
-
     constructor({id, process, lifestyle, compensation, mentorship, diversity, fname, lname, bootcamp, city, state, company_id}){
         this.process = process
         this.lifestyle = lifestyle
@@ -21,17 +19,12 @@ class Ratings{
         this.element.id = `review-${this.id}`
         this.enterArea = document.getElementById("enter-area")
         this.enterArea.addEventListener('click', Ratings.handleReviewClicks)
-        
-
-        // this.allReviewsBtn = document.getElementById('all-companiesReviews');
-        // this.allreviewsBtn = document.getElementById('all-companies-reviews');
-
-        Ratings.all.push(this)
+        this.main = document.getElementById("main")
+        this.main.addEventListener('click', Ratings.handleReviewClicks)
     }
 
     static findById = (e) => {
-            // debugger
-            fetch(`http://localhost:3000/ratings/${e}`)
+            fetch(`http://localhost:3000/ratings/${e.target.dataset.id}`)
             .then(res => res.json().then(json =>{
                 let rating = new Ratings(json.data)
                 rating.updateReview(json.data)
@@ -39,52 +32,33 @@ class Ratings{
     }
 
     static findId = (e) => {
-        // debugger
-        fetch(`http://localhost:3000/ratings/${e}`)
+        fetch(`http://localhost:3000/ratings/${e.target.dataset.id}`)
         .then(res => res.json().then(json =>{
             let rating = new RatingsAdapter(json.data)
             rating.deleteReview(json.data)
         }))
     }
-
-
-    static handleReviewClicks = (e) => {
-        // debugger
-        if (e.target.className === "update"){
-            let id = e.path[0].dataset.id
-            Ratings.findById(id)
-        } else if (e.target.id === "hiredCheckBox"){
-            toggleHired(e.target)
-        } else if (e.target.id === "interviewCheckBox"){
-            toggleInterview(e.target)
-        } else if(e.target.className === "delete"){
-            let id = e.path[0].dataset.id
-            Ratings.findId(id)
-        }
-    }
     
     attachToDom(){
-        enterArea.append(this.partialReviewRender())
-        this.addEventListener
+        this.main.style.display = "none"
+        this.enterArea.append(this.partialReviewRender())
     }
 
     partialReviewRender(){
         this.element.innerHTML = 
-            `<li>
-                Interview Process: ${this.process}<br/>
-                Company Lifestyle: ${this.lifestyle}<br/>
-                Mentorship: ${this.mentorship}<br/>
-                Diversity: ${this.diversity}<br/>
-                    <div id="review-identity"><br/>
-                    -${this.first_name} ${this.last_name} (${this.bootcamp})<br/>
-                    from: ${this.city}, ${this.state}
-                    </div>
-            </li>`
+           `_____________________________________________________<br/><br/>
+            Interview Process: ${this.process}<br/>
+            Company Lifestyle: ${this.lifestyle}<br/>
+            Mentorship: ${this.mentorship}<br/>
+            Diversity: ${this.diversity}<br/>
+                <div id="review-identity"><br/>
+                -${this.fname} ${this.lname} (${this.bootcamp})<br/>
+                from: ${this.city}, ${this.state}
+                </div><br/><br/>`
             return this.element
     }
 
     addReviewToDom = (e) => {
-        // debugger
         const infoSubmitted = `
             <div id="review-${e.id}">
                 <h3>${e.attributes.company.data.attributes.name}</h3>
@@ -95,15 +69,16 @@ class Ratings{
                 Compensation: $<span class="compensation">${e.attributes.compensation}</span><br/><br/>
                 -<span class="firstName">${e.attributes.fname}</span> <span class="lastName">${e.attributes.lname}</span> <span class="bootcamp">(${e.attributes.bootcamp})</span><br/>
                 from: <span class="city">${e.attributes.city}</span>, <span class="state">${e.attributes.state}</span><br/><br/>
-                <button class="delete" data-id="${e.id}">delete</button>
-                <button class="update" data-id="${e.id}">update</button>
+                <button id="delete" class="delete" data-id="${e.id}">delete</button>
+                <button id="update" class="update" data-id="${e.id}">update</button>
                 <br/>
             </div>`
         this.enterArea.innerHTML = infoSubmitted 
+        document.getElementById("delete").addEventListener('click', Ratings.findId)
+        document.getElementById("update").addEventListener('click', Ratings.findById)
     }
 
     updateReview = (e) => {
-        // debugger
         this.review = document.querySelector(`#review-${e.id}`)
         let interviewProcess = this.review.querySelector('.interviewProcess').innerText
         let companyLifestyle = this.review.querySelector('.companyLifestyle').innerText
@@ -174,60 +149,5 @@ class Ratings{
         this.review.append(this.formDiv)
         this.save = document.getElementById("updated-review-submit")
         this.save.addEventListener('click', this.ratingsAdapter.sendPatchRequest)
-    }
-
-    addAllReviews = (e) => {
-        // debugger
-        this.enterArea.innerHTML = " "
-        // this.enterArea.innerHTML = `
-        //     <strong>Look at individual company reviews:</strong> 
-        //     <select name="companyIndivId" id="companyIndivId" form="company-review">
-        //         <option class="individualComp" value=" "> </option>
-        //         <option class="individualComp" value="1">HubSpot</option>
-        //         <option class="individualComp" value="2">DocuSign</option>
-        //         <option class="individualComp" value="3">Ultimate Software</option>
-        //         <option class="individualComp" value="4">Google</option>
-        //         <option class="individualComp" value="5">LinkedIn</option>
-        //         <option class="individualComp" value="6">MathWorks</option>
-        //         <option class="individualComp" value="7">Nvidia</option>
-        //         <option class="individualComp" value="8">Microsoft</option>
-        //         <option class="individualComp" value="9">Facebook</option>
-        //         <option class="individualComp" value="10">Compass</option>
-        //         <option class="individualComp" value="11">Survey Monkey</option>
-        //         <option class="individualComp" value="12">Saleforce</option>
-        //         <option class="individualComp" value="13">Kronos Incorporated</option>
-        //         <option class="individualComp" value="14">VMware</option>
-        //         <option class="individualComp" value="15">Adobe</option>
-        //         <option class="individualComp" value="16">Appfolio</option>
-        //         <option class="individualComp" value="17">SAP</option>
-        //         <option class="individualComp" value="18">CDW</option>
-        //         <option class="individualComp" value="19">Yardi Systems</option>
-        //         <option class="individualComp" value="20">JDA Software (Blue Yonder)</option>
-        //         <option class="individualComp" value="21">Nextiva</option>
-        //         <option class="individualComp" value="22">Paycom</option>
-        //         <option class="individualComp" value="23">Dell</option>
-        //         <option class="individualComp" value="24">Slack</option>
-        //         <option class="individualComp" value="25">Intuit</option>
-        //         <option class="individualComp" value="26">Noon</option>
-        //         <option class="individualComp" value="27">UST Global</option>
-        //         <option class="individualComp" value="28">Cisco Systems</option>
-        //         <option class="individualComp" value="29">Apple</option>
-        //         <option class="individualComp" value="30">Epic Systems</option>
-        //         <option class="individualComp" value="31">Intel</option>
-        //     </select>`
-        e.forEach( e => {
-        this.enterArea.innerHTML += `
-            <div id="review-${e.id}">
-                <h3>* ${e.attributes.company.data.attributes.name}</h3>
-                <small>Interview Process:</small> <span class="interviewProcess">${e.attributes.process}</span><br/>
-                <small>Company Lifestyle:</small> <span class="companyLifestyle">${e.attributes.lifestyle}</span><br/>
-                <small>Mentorship:</small> <span class="mentorship">${e.attributes.mentorship}</span><br/>
-                <small>Diversity:</small> <span class="diversity">${e.attributes.diversity}</span><br/>
-                <small>Compensation: </small>$<span class="compensation">${e.attributes.compensation}</span><br/><br/>
-                -<span class="firstName">${e.attributes.fname}</span> <span class="lastName">${e.attributes.lname}</span> <em class="bootcamp">(${e.attributes.bootcamp})</em><br/>
-                <span class="city">${e.attributes.city}</span>, <span class="state">${e.attributes.state}</span><br/><br/>
-                ___________________________________________________________________
-            </div>`
-        })
     }
 }

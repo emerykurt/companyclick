@@ -3,7 +3,7 @@ class Companies{
         this.name = name
         this.hq_city = hq_city
         this.hq_state = hq_state
-        this.mission_statement = mission_statement
+        this.mission = mission_statement
         this.website = website
         this.twitter = twitter
         this.id = id
@@ -14,34 +14,9 @@ class Companies{
         this.element.id = `company-${this.id}`
         this.companyList = document.getElementById('company-list')
         this.enterArea = document.getElementById("enter-area")
-        this.enterArea.addEventListener('click', Companies.handleCompanyClickEvent)  
-        
-        // Companies.all.push(this)
-    }
-
-    static handleCompanyClickEvent = (e) => {
-        // debugger
-        if (e.target.className === "companyApply"){
-            let comp = new Companies
-            let apply = Companies.comp
-            comp.applyToComp(apply) 
-        } else if(e.target.className === "companyTwitter"){
-            let comp = new Companies
-            let twitter = Companies.comp
-            comp.twitterLink(twitter)
-        } else if (e.target.className === "review-comp"){
-            let comp = new Companies
-            let review = Companies.comp
-            comp.renderReviewForm(review)
-        } else if (e.target.id === "sign-up-submit"){
-            let comp = new Companies
-            let results = Companies.comp
-            comp.submitResults(results)
-        } else if (e.target.id === "compToggle"){
-            let comp = new Companies
-            let results = Companies.comp
-            comp.toggleMoreInfo(e)
-        }
+        this.enterArea.addEventListener('click', Companies.handleCompanyClickEvent)
+        this.main = document.getElementById("main")
+        this.main.addEventListener('click', Companies.handleCompanyClickEvent)     
     }
 
     attachTopToDom = (e) => {
@@ -51,79 +26,38 @@ class Companies{
     }
     
     addIndivComp = (e) => {
-        // debugger
         this.indivCompSpace = document.getElementById("indivInfoSpace")
-        this.indivCompSpace.append(Companies.indivRender(e))   
+        this.indivCompSpace.append(this.indivRender(e))   
     }
 
-    static indivRender = (e) => {
-        // debugger
-        this.comp = e.attributes
+    indivRender = (e) => {
         this.indivCompSpace = document.getElementById("indivInfoSpace")
         this.indivCompSpace.innerHTML =
-        `<h3>${this.comp.name} </h3>
-        <strong>Mission Statement:</strong> ${this.comp.mission_statement}<br/>
-        <strong>HQ: ${this.comp.hq_city}, ${this.comp.hq_state}</strong><br/><br/>
-        <button class="companyApply" data-id="${this.comp.website}">Apply Here</button>
-        <button class="companyTwitter" data-id="${this.comp.twitter}">Twitter</button><br/>
-        <button class="review-comp" data-id="${this.comp.id}">Write a Review</button><br/><br/>`
+        `<h3>${name} </h3>
+        <strong>Mission Statement:</strong> ${e.mission_statement}<br/>
+        <strong>HQ: ${e.hq_city}, ${e.hq_state}</strong><br/><br/>
+        <button id="compApply" class="companyApply" data-id="${e.website}">Apply Here</button>
+        <button id="compTwitter" class="companyTwitter" data-id="${e.twitter}">Twitter</button><br/>
+        <button id="review-comp" class="review-comp" data-id="${e.id}">Write a Review</button><br/><br/>`
 
+        let comp = new Companies
+        document.getElementById("review-comp").addEventListener('click', comp.renderReviewForm)
+        document.getElementById("compApply").addEventListener('click', comp.applyToComp)
+        document.getElementById("compTwitter").addEventListener('click', comp.twitterLink)
         let com = " "
         return  com
-    } //"it's running twice: undefined showing in browser"
-
-    addCompsToDom = (e) => {
-        // debugger
-        this.enterArea.innerHTML = " "
-        e.forEach( company => {
-        this.enterArea.innerHTML += 
-        `<li class="company" data-id="${company.id}">
-            ${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
-            <label for="more-info" id="moreInfoText-${company.id}" class="moreInfoText" data-id="${company.id}">more...</label>
-            <input type="checkbox" id="compToggle" class="moreInfo" data-id="${company.id}"><br/>
-                <div id="element-${company.id}" style="display:none">
-                    Mission Statement: ${company.attributes.mission_statement}<br/>
-                    <button class="companyApply" data-id="${company.attributes.website}">Apply Here</button>
-                    <button class="companyTwitter" data-id="${company.attributes.twitter}">Twitter</button><br/><br/>
-                </div>
-            <button class="review-comp" data-id="${company.id}">Write a Review</button><br/><br/>
-        </li>`
-    })
-    // this.toggle = document.querySelector("#compToggle")
-    // this.toggle.addEventListener('click', this.toggleMoreInfo)
-    }
-
-    toggleMoreInfo = (e) => {
-        // debugger
-        let click = e.target
-        let id = e.target.dataset.id
-        if (click.checked === true){
-            // debugger
-            const moreInfoArea = document.getElementById(`element-${id}`)
-            moreInfoArea.style.display = 'block'
-            const moreInfoLabel = document.getElementById(`moreInfoText-${id}`)
-            moreInfoLabel.innerHTML = "...less"
-        }
-        else if (click.checked === false){
-            // debugger
-            const moreInfoArea = document.getElementById(`element-${id}`)
-            moreInfoArea.style.display = 'none'
-            const moreInfoLabel = document.getElementById(`moreInfoText-${id}`)
-            moreInfoLabel.innerHTML = "more..."
-        }
-    }//WIP
+    } 
 
     applyToComp = (e) => {
-        debugger
-        window.open(e.website, "_blank");
+        window.open(e.target.dataset.id, "_blank");
     }
 
     twitterLink = (e) => {
-        window.open(e.twitter, "_blank");
+        window.open(e.target.dataset.id, "_blank");
     }
 
     renderReviewForm = (e) => {
-        // debugger
+        this.main.style.display = "none"
         const reviewForm = `<form id="company-review">
         <label for="company-id">Company:</label>
         <select name="companyId" id="companyId" form="company-review">
@@ -193,15 +127,12 @@ class Companies{
         </form>
         <div class="infoSubmit" id:"review-results"></div>` 
         this.enterArea.innerHTML = reviewForm
-        document.getElementById("companyId").selectedIndex = e.id
-        this.toggleInter = document.getElementById("interviewCheckBox")
-        this.toggleInter.addEventListener('click', this.toggleInterview)
-        this.submit = document.getElementById("review-submit")
-        this.submit.addEventListener('click', this.ratingsAdapter.postResults)
+        document.getElementById("companyId").selectedIndex = e.target.dataset.id
+        document.getElementById("interviewCheckBox").addEventListener('click', this.toggleInterview)
+        document.getElementById("review-submit").addEventListener('click', this.ratingsAdapter.postResults)
     }
 
     toggleInterview = (e) => {
-        // debugger
         if (e.target.checked === true) {
         const interviewExtenArea = document.getElementById("interviewExt")
         const interviewExtForm = `
@@ -217,16 +148,14 @@ class Companies{
             <div id="hiredExt" form="hired-portion">
             </div>`
         interviewExtenArea.innerHTML = interviewExtForm
+        document.getElementById("hiredCheckBox").addEventListener('click', this.toggleHired)
         }else if (e.target.checked === false){
             const interviewExtenArea = document.getElementById("interviewExt")
             interviewExtenArea.innerHTML = " " 
         }
-        this.hired = document.getElementById("hiredCheckBox")
-        this.hired.addEventListener('click', this.toggleHired)
     }
 
     toggleHired = (e) => {
-        // debugger
         if (e.target.checked === true){
             const hiredExtenArea = document.getElementById("hiredExt")
             const hiredExtForm = `
@@ -256,8 +185,7 @@ class Companies{
             </select><br/>`
             hiredExtenArea.innerHTML = hiredExtForm
         } else if (e.target.checked === false){
-            const hiredExtenArea = document.getElementById("hiredExt")
-            hiredExtenArea.innerHTML = " "
+            document.getElementById("hiredExt").innerHTML = " "
         }
     }
 }

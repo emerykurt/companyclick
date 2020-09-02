@@ -322,3 +322,59 @@ const allCompaniesBtn = document.getElementById('all-companiesList');
 const allcompaniesBtn = document.getElementById('all-companies-list');
 const allReviewsBtn = document.getElementById('all-companiesReviews');
 const allreviewsBtn = document.getElementById('all-companies-reviews');
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+toggleMoreInfo = (e) => {
+        // debugger
+        let click = e.target
+        let id = e.target.dataset.id
+        if (click.checked === true){
+            // debugger
+            const moreInfoArea = document.getElementById(`element-${id}`)
+            moreInfoArea.style.display = 'block'
+            const moreInfoLabel = document.getElementById(`moreInfoText-${id}`)
+            moreInfoLabel.innerHTML = "...less"
+        }
+        else if (click.checked === false){
+            // debugger
+            const moreInfoArea = document.getElementById(`element-${id}`)
+            moreInfoArea.style.display = 'none'
+            const moreInfoLabel = document.getElementById(`moreInfoText-${id}`)
+            moreInfoLabel.innerHTML = "more..."
+        }
+    }//WIP
+    /////////////////////////////////////////////////////////////////////////////
+
+    addCompsToDom = (e) => {
+        // debugger
+        this.enterArea.innerHTML = " "
+        e.forEach( company => {
+        this.enterArea.innerHTML += 
+        `<li class="company" data-id="${company.id}">
+            ${company.attributes.name} - ${company.attributes.hq_city}, ${company.attributes.hq_state}
+            <label for="more-info" id="moreInfoText-${company.id}" class="moreInfoText" data-id="${company.id}">more...</label>
+            <input type="checkbox" id="compToggle" class="moreInfo" data-id="${company.id}"><br/>
+                <div id="element-${company.id}" style="display:none">
+                    Mission Statement: ${company.attributes.mission_statement}<br/>
+                    <button class="companyApply" data-id="${company.attributes.website}">Apply Here</button>
+                    <button class="companyTwitter" data-id="${company.attributes.twitter}">Twitter</button><br/><br/>
+                </div>
+            <button class="review-comp" data-id="${company.id}">Write a Review</button><br/><br/>
+        </li>`
+    })
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+       fetchCompanies = () => {
+        fetch(this.baseurl)
+        .then(res => res.json())
+        .then(json => {
+            // debugger
+            let companies = new Companies(json.data)
+            companies.addCompsToDom(json.data)
+        })
+    }

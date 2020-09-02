@@ -8,7 +8,6 @@ class CompaniesAdapter{
         fetch(this.baseurl + `/top_companies`)
         .then(res => res.json())
         .then(json => {
-            // debugger
             json.data.forEach((e) =>{
                 let company = new Companies(e.attributes)
                 company.attachTopToDom(e.attributes)
@@ -17,23 +16,12 @@ class CompaniesAdapter{
     }
 
     fetchIndivComp = (e) => {
-        // debugger
+
         fetch(this.baseurl + `/${e.target.value}`)
         .then(res => res.json())
         .then( json => {
-            let company = new Companies(json.data)
-            company.addIndivComp(json.data)
+            let company = new Companies(json.data.attributes)
+            company.addIndivComp(json.data.attributes)
         })
-    }
-
-    fetchCompanies = () => {
-        fetch(this.baseurl)
-        .then(res => res.json())
-        .then(json => {
-            // debugger
-            let companies = new Companies(json.data)
-            companies.addCompsToDom(json.data)
-        })
-    }
-    
+    }   
 }
