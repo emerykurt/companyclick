@@ -2,16 +2,14 @@ const ratings = new RatingsAdapter
 const companies = new CompaniesAdapter
 document.getElementById("companyIndivId").addEventListener('change', companies.fetchIndivComp)
 document.getElementById('all-companiesReviews').addEventListener('click', ratings.fetchAllReviews)
-document.getElementById('all-companies-reviews').addEventListener('click', ratings.fetchAllReviews)
 document.getElementById("mainPg").addEventListener('click', main)
-document.getElementById("main-pg").addEventListener('click', main)
 
 
 
 
 document.addEventListener('DOMContentLoaded', (init)) 
 function init(){ 
-    // debugger
+    debugger
     companies.fetchTopCompanies()    
 } 
 

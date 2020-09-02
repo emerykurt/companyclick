@@ -33,12 +33,12 @@ class Companies{
     indivRender = (e) => {
         this.indivCompSpace = document.getElementById("indivInfoSpace")
         this.indivCompSpace.innerHTML =
-        `<h3>${name} </h3>
-        <strong>Mission Statement:</strong> ${e.mission_statement}<br/>
-        <strong>HQ: ${e.hq_city}, ${e.hq_state}</strong><br/><br/>
-        <button id="compApply" class="companyApply" data-id="${e.website}">Apply Here</button>
-        <button id="compTwitter" class="companyTwitter" data-id="${e.twitter}">Twitter</button><br/>
-        <button id="review-comp" class="review-comp" data-id="${e.id}">Write a Review</button><br/><br/>`
+        `<br/><br/><h3 style="color:rgb(36, 35, 35)">${name} </h3>
+        <strong style="color:rgb(36, 35, 35)">Mission Statement:</strong> ${e.mission_statement}<br/>
+        <strong style="color:rgb(36, 35, 35)">HQ: ${e.hq_city}, ${e.hq_state}</strong><br/><br/>
+        <button id="compApply" class="button" data-id="${e.website}">Apply Here</button>
+        <button id="compTwitter" class="button" data-id="${e.twitter}">Twitter</button><br/>
+        <button id="review-comp" class="button" data-id="${e.id}">Write a Review</button><br/><br/>`
 
         let comp = new Companies
         document.getElementById("review-comp").addEventListener('click', comp.renderReviewForm)
