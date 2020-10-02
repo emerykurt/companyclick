@@ -26,6 +26,7 @@ class Companies{
     }
     
     addIndivComp = (e) => {
+        // debugger
         this.indivCompSpace = document.getElementById("indivInfoSpace")
         this.indivCompSpace.append(this.indivRender(e))   
     }
@@ -57,6 +58,7 @@ class Companies{
     }
 
     renderReviewForm = (e) => {
+        debugger
         this.main.style.display = "none"
         const reviewForm = `<form id="company-review">
         <label for="company-id">Company:</label>

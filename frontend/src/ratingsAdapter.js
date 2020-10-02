@@ -7,6 +7,7 @@ class RatingsAdapter{
 
     fetchAllReviews = () => {
         this.enterArea.innerHTML = " "
+        document.getElementById("filter").style.display = "block"
         fetch("http://localhost:3000/ratings")
         .then(res => res.json())
         .then(json => {

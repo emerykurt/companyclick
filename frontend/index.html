@@ -44,12 +44,56 @@ Released   : 20140330
 </div>
 <div id="wrapper">
 	<div id="three-column" class="container">
-		<div id="enter-area"></div>
+        <div id="filter">
+            <strong>Look at individual company reviews:</strong> 
+            <select name="companyIndivId" id="companyIndivId" form="company-review">
+                <option class="individualComp" value=" "> </option>
+                <option class="individualComp" value="1">HubSpot</option>
+                <option class="individualComp" value="2">DocuSign</option>
+                <option class="individualComp" value="3">Ultimate Software</option>
+                <option class="individualComp" value="4">Google</option>
+                <option class="individualComp" value="5">LinkedIn</option>
+                <option class="individualComp" value="6">MathWorks</option>
+                <option class="individualComp" value="7">Nvidia</option>
+                <option class="individualComp" value="8">Microsoft</option>
+                <option class="individualComp" value="9">Facebook</option>
+                <option class="individualComp" value="10">Compass</option>
+                <option class="individualComp" value="11">Survey Monkey</option>
+                <option class="individualComp" value="12">Saleforce</option>
+                <option class="individualComp" value="13">Kronos Incorporated</option>
+                <option class="individualComp" value="14">VMware</option>
+                <option class="individualComp" value="15">Adobe</option>
+                <option class="individualComp" value="16">Appfolio</option>
+                <option class="individualComp" value="17">SAP</option>
+                <option class="individualComp" value="18">CDW</option>
+                <option class="individualComp" value="19">Yardi Systems</option>
+                <option class="individualComp" value="20">JDA Software (Blue Yonder)</option>
+                <option class="individualComp" value="21">Nextiva</option>
+                <option class="individualComp" value="22">Paycom</option>
+                <option class="individualComp" value="23">Dell</option>
+                <option class="individualComp" value="24">Slack</option>
+                <option class="individualComp" value="25">Intuit</option>
+                <option class="individualComp" value="26">Noon</option>
+                <option class="individualComp" value="27">UST Global</option>
+                <option class="individualComp" value="28">Cisco Systems</option>
+                <option class="individualComp" value="29">Apple</option>
+                <option class="individualComp" value="30">Epic Systems</option>
+                <option class="individualComp" value="31">Intel</option>
+            </select>
+            <label for="mentorship-checked">Mentorship</label>
+            <input type="checkbox" name="mentorship" id="compMentorship">
+            <label for="diversity-checked">Diversity</label>
+            <input type="checkbox" name="diversity" id="compDiversity"><br/>
+        </div>
+
+
+
+        <div id="enter-area"></div>
         <div id="main">
             <strong style="color:rgb(7, 7, 7)">Business Insider's Top 5 Tech Companies:</strong>
             <ul id="topCompaniesList" style="color:rgb(36, 35, 35)"></ul>
             <strong style="color:rgb(7, 7, 7)">Choose a company to find out more information:</strong> 
-                <select name="companyIndivId" id="companyIndivId" form="company-review">
+                <select name="companyIndivId" id="companyIndivID" form="company-review">
                     <option class="individualComp" value=" "> </option>
                     <option class="individualComp" value="1">HubSpot</option>
                     <option class="individualComp" value="2">DocuSign</option>

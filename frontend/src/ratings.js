@@ -42,19 +42,64 @@ class Ratings{
     attachToDom(){
         this.main.style.display = "none"
         this.enterArea.append(this.partialReviewRender())
+        document.getElementById("compDiversity").addEventListener('click', this.diversityFilter)
+        document.getElementById("compMentorship").addEventListener('click', this.diversityFilter)
+        document.getElementById("compMentorship").addEventListener('click', this.mentorshipFilter)
+        // document.getElementById("compDiversity").addEventListener('click', this.mentorshipFilter)
+        document.getElementById("companyIndivId").addEventListener('change', this.companyFilter)
+    }
+
+    companyFilter = (e) => {
+        // debugger
+        let compId = document.getElementById("companyIndivId")
+        if (compId.value == 0){
+            document.getElementById(`review-${this.id}`).style.display = "block"
+        }else if (this.company_id == compId.value){
+            document.getElementById(`review-${this.id}`).style.display = "block"
+        } else {
+            document.getElementById(`review-${this.id}`).style.display = "none"
+        }
+
+    }
+
+    mentorshipFilter = (e) => {
+        let review = document.getElementById(`review-list-${this.id}`)
+        let mentorship = document.getElementById(`mentorship-${this.id}`)
+        if (e.target.checked === true){
+            if (mentorship.innerHTML === "no") {
+                review.style.display = "none"
+            } 
+        } else {
+            review.style.display = "block"
+        }
+    }
+
+    diversityFilter = (e) => {
+        // debugger
+        let review = document.getElementById(`review-list-${this.id}`)
+        let diversity = document.getElementById(`diversity-${this.id}`)
+        if (e.target.checked === true){
+            if (diversity.innerHTML === "no") {
+                review.style.display = "none"
+            } 
+        } else {
+            review.style.display = "block"
+        }
     }
 
     partialReviewRender(){
         this.element.innerHTML = 
-           `_____________________________________________________<br/><br/>
+           `<div id="review-list-${this.id}">
+           _____________________________________________________<br/><br/>
             Interview Process: ${this.process}<br/>
             Company Lifestyle: ${this.lifestyle}<br/>
-            Mentorship: ${this.mentorship}<br/>
-            Diversity: ${this.diversity}<br/>
+            Mentorship:<div id="mentorship-${this.id}">${this.mentorship}</div><br/>
+            Diversity:<div id="diversity-${this.id}">${this.diversity}</div><br/>
                 <div id="review-identity"><br/>
                 -${this.fname} ${this.lname} (${this.bootcamp})<br/>
                 from: ${this.city}, ${this.state}
-                </div><br/><br/>`
+                </div><br/><br/>
+            </div>`
             return this.element
     }
 

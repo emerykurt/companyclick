@@ -16,7 +16,7 @@ class CompaniesAdapter{
     }
 
     fetchIndivComp = (e) => {
-
+        // debugger
         fetch(this.baseurl + `/${e.target.value}`)
         .then(res => res.json())
         .then( json => {
